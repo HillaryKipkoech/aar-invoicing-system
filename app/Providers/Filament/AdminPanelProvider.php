@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::hex('#2c3e56'), // navy, matches the screenshot title bar
                 'warning' => Color::hex('#d4a017'), // gold accent
