@@ -370,7 +370,7 @@
         </div>
 
          <div class="copy-buttons">
-            <button type="button" class="btn secondary" wire:click="copyFrom">Copy From</button>
+            <button type="button" class="btn" wire:click="copyFrom">Copy From</button>
             <button type="button" class="btn secondary" wire:click="copyTo">Copy To</button>
         </div>
     </div>

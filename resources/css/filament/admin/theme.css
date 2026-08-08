@@ -25,6 +25,14 @@
    FILAMENT TOP NAVIGATION BAR
    ========================================================= */
 
+/* =========================================================
+   FILAMENT TOP NAVIGATION BAR — full-width navy, no gaps
+   ========================================================= */
+
+.fi-topbar {
+    background-color: var(--ar-navy) !important;
+}
+
 .fi-topbar nav {
     background-color: var(--ar-navy) !important;
     border-top: var(--ar-accent-width) solid var(--ar-gold) !important;
@@ -32,15 +40,35 @@
     min-height: 58px;
 }
 
-.fi-topbar nav * {
+.fi-topbar * {
     color: #ffffff !important;
 }
 
-.fi-topbar nav .fi-avatar {
+.fi-topbar .fi-avatar {
     background-color: #111111 !important;
     color: #ffffff !important;
 }
 
+/* The sidebar-toggle / logo slot on the far left of the topbar */
+.fi-topbar-open-sidebar-btn,
+.fi-logo {
+    background-color: var(--ar-navy) !important;
+    color: #ffffff !important;
+}
+
+.fi-sidebar-header {
+    background-color: var(--ar-navy) !important;
+    border-top: var(--ar-accent-width) solid var(--ar-gold) !important;
+    border-bottom: none !important;
+}
+
+.fi-sidebar-header * {
+    color: #ffffff !important;
+}
+
+.fi-sidebar-header svg {
+    color: #ffffff !important;
+}
 
 /* =========================================================
    FILAMENT PAGE HEADER — flush, continuous with topbar
@@ -72,6 +100,8 @@
 .fi-header svg {
     color: #ffffff !important;
 }
+
+
 
 
 /* =========================================================
@@ -299,7 +329,7 @@
     justify-content: space-between;
     padding: 10px 14px 4px 14px;
     flex-wrap: wrap;
-    background: #ffffff;
+    
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -479,7 +509,7 @@
 
 .ar-invoice .tabs {
     display: flex;
-    margin: 10px 14px 0 14px;
+    margin: 50px 14px 0 14px;
     border: none;
     border-bottom: 1px solid #b9b9b9;
     gap: 2px;
@@ -487,6 +517,8 @@
 }
 
 .ar-invoice .tab {
+    flex: 1 1 0;
+    text-align: center;
     padding: 6px 22px;
     font-size: 12px;
     background: #e8e8e8;

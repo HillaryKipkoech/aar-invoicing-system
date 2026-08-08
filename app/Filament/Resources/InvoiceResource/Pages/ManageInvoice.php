@@ -452,7 +452,7 @@ public function updatedCustomerNameSearch($value): void
 
         public function getTitle(): string
         {
-            return 'AR Invoice';
+            return '';
         }
 
     public function getBreadcrumbs(): array
