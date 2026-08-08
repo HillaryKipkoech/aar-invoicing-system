@@ -26,19 +26,28 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(\App\Filament\Pages\Auth\Login::class)
             ->sidebarCollapsibleOnDesktop()
             ->colors([
-                'primary' => Color::hex('#2c3e56'), // navy, matches the screenshot title bar
-                'warning' => Color::hex('#d4a017'), // gold accent
+                'primary' => Color::hex('#2c3e56'),
+                'warning' => Color::hex('#d4a017'),
+                'success' => Color::hex('#10b981'),
             ])
-            ->font('Segoe UI') // closest web-safe match to the SAP B1 font
+            ->font('Segoe UI')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([Pages\Dashboard::class])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([Widgets\AccountWidget::class, Widgets\FilamentInfoWidget::class])
+           ->pages([
+                \App\Filament\Pages\Dashboard::class,
+            ])
+            ->discoverWidgets(
+                in: app_path('Filament/Widgets'),
+                for: 'App\\Filament\\Widgets'
+            )
+            ->widgets([
+                \App\Filament\Widgets\DashboardStats::class,
+                \App\Filament\Widgets\RecentInvoices::class,
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

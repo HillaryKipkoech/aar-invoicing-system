@@ -7,20 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     protected $fillable = [
-        'doc_no', 'customer_id', 'customer_code', 'customer_name', 'posting_date',
+        'doc_no', 'customer_id', 'customer_code', 'customer_name', 'contact_person', 'posting_date',
         'value_date', 'document_date', 'sales_employee_id', 'owner', 'remarks',
         'qr_code', 'total_before_discount', 'discount_percent', 'total_down_payment',
         'freight', 'rounding', 'tax', 'total_after_discount', 'applied_amount',
         'balance_due', 'needs_approval', 'status',
     ];
 
-    protected $casts = [
-        'posting_date' => 'date',
-        'value_date' => 'date',
-        'document_date' => 'date',
-        'needs_approval' => 'boolean',
-        'rounding' => 'boolean',
-    ];
+ // Invoice model
+        protected $casts = [
+            'posting_date' => 'date',
+            'value_date' => 'date',
+            'document_date' => 'date',
+            'needs_approval' => 'boolean',
+            'rounding' => 'boolean',
+            'total_before_discount' => 'decimal:3',
+            'discount_percent' => 'decimal:3',
+            'total_down_payment' => 'decimal:3',
+            'freight' => 'decimal:3',
+            'tax' => 'decimal:3',
+            'total_after_discount' => 'decimal:3',
+            'applied_amount' => 'decimal:3',
+            'balance_due' => 'decimal:3',
+        ];
 
     // Threshold above which the invoice requires approval
     public const APPROVAL_THRESHOLD = 10000;

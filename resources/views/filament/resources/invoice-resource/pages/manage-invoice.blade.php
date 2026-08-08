@@ -1,28 +1,43 @@
 <x-filament-panels::page>
     <div class="ar-invoice" style="border:1px solid #b9b9b9;">
+        <div class="ar-invoice"
+     style="border:1px solid #b9b9b9;"
+     x-data
+     @click.outside="$wire.showCustomerDropdown = false; $wire.showCustomerNameDropdown = false; $wire.showSalesEmployeeDropdown = false;">
 
         {{-- ===== Title bar ===== --}}
-        <div class="titlebar">
+        <!-- <div class="titlebar">
             <span>AR Invoice</span>
             <span class="controls">
                 <span>&#8211;</span>
                 <span>&#9633;</span>
                 <span class="close">&#10005;</span>
             </span>
-        </div>
+        </div> -->
 
         {{-- ===== Header ===== --}}
         <div class="header-wrap">
             <div class="header-left">
-                <div class="field-row">
+                <div class="field-row" style="position:relative;">
                     <div class="field-label">Customer</div>
-                    <div class="field-input-wrap">
-                        <select class="field-input" wire:model.live="customer_id">
-                            <option value="">-- select --</option>
-                            @foreach(\App\Models\Customer::all() as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->customer_code }}</option>
-                            @endforeach
-                        </select>
+                    <div class="field-input-wrap" style="position:relative;">
+                        <input
+                            class="field-input"
+                            wire:model.live.debounce.300ms="customerSearch"
+                            @focus="$wire.showCustomerDropdown = true"
+                            autocomplete="off"
+                            placeholder="Type to search...">
+
+                        @if($showCustomerDropdown && count($customerResults))
+                            <div class="ac-dropdown">
+                                @foreach($customerResults as $c)
+                                    <div class="ac-dropdown-item" wire:click="selectCustomer({{ $c['id'] }})">
+                                        <span class="ac-primary">{{ $c['customer_code'] }}</span>
+                                        <span class="ac-secondary">{{ $c['display_name'] }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="field-row">
@@ -37,6 +52,28 @@
                         <input class="field-input" wire:model="contact_person">
                     </div>
                 </div>
+                <div class="field-row" style="position:relative;">
+    <div class="field-label">Customer Name</div>
+    <div class="field-input-wrap" style="position:relative;">
+        <input
+            class="field-input"
+            wire:model.live.debounce.300ms="customerNameSearch"
+            @focus="$wire.showCustomerNameDropdown = true"
+            autocomplete="off"
+            placeholder="Type to search...">
+
+        @if($showCustomerNameDropdown && count($customerNameResults))
+            <div class="ac-dropdown">
+                @foreach($customerNameResults as $c)
+                    <div class="ac-dropdown-item" wire:click="selectCustomer({{ $c['id'] }})">
+                        <span class="ac-primary">{{ $c['display_name'] }}</span>
+                        <span class="ac-secondary">{{ $c['customer_code'] }}</span>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+</div>
                 <div class="field-row">
                     <div class="field-label bold">BP Currency</div>
                     <div class="field-input-wrap">
@@ -104,6 +141,25 @@
 
             <div class="table-wrap">
                 <table class="grid">
+                    {{-- Explicit column widths + table-layout:fixed (see CSS) keep the
+                         header and body columns aligned as Livewire re-renders rows. --}}
+                    <colgroup>
+                        <col style="width:30px;">
+                        <col style="width:130px;">
+                        <col style="width:220px;">
+                        <col style="width:80px;">
+                        <col style="width:80px;">
+                        <col style="width:90px;">
+                        <col style="width:80px;">
+                        <col style="width:110px;">
+                        <col style="width:90px;">
+                        <col style="width:120px;">
+                        <col style="width:80px;">
+                        <col style="width:130px;">
+                        <col style="width:110px;">
+                        <col style="width:120px;">
+                        <col style="width:36px;">
+                    </colgroup>
                     <thead>
                         <tr>
                             <th class="row-num">#</th>
@@ -129,6 +185,7 @@
                                 <td class="row-num">{{ $index + 1 }}</td>
                                 <td>
                                     <div class="go-cell">
+                                        <span class="go-arrow">&#10148;</span>
                                         <select wire:model="lines.{{ $index }}.item_no">
                                             <option value="">--</option>
                                             @foreach(\App\Models\Item::pluck('item_no') as $itemNo)
@@ -171,90 +228,152 @@
         @endif
 
         {{-- ===== Footer ===== --}}
-        <div class="footer-wrap">
-            <div class="footer-left">
-                <div class="field-row">
-                    <div class="field-label" style="width:120px;">Sales Employee</div>
-                    <div class="field-input-wrap">
-                        <select class="field-input" wire:model.live="sales_employee_id" style="max-width:200px;">
-                            <option value="">-- select --</option>
-                            @foreach(\App\Models\SalesEmployee::all() as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="field-row">
-                    <div class="field-label" style="width:120px;">Owner</div>
-                    <div class="field-input-wrap">
-                        <input class="field-input readonly" value="{{ $owner }}" disabled style="max-width:200px;">
-                    </div>
-                </div>
+       {{-- ===== Footer ===== --}}
+<div class="footer-wrap">
+    <div class="footer-left">
+        <div class="field-row" style="position:relative;">
+            <div class="field-label" style="width:120px;">Sales Employee</div>
+            <div class="field-input-wrap" style="position:relative;">
+                <input
+                    class="field-input"
+                    wire:model.live.debounce.300ms="salesEmployeeSearch"
+                    @focus="$wire.showSalesEmployeeDropdown = true"
+                    autocomplete="off"
+                    placeholder="Type to search..."
+                    style="max-width:200px;">
 
-                <div class="checkbox-row">
-                    <input type="checkbox" wire:model="payment_order_run">
-                    <span>Payment Order Run</span>
-                </div>
-
-                <div class="remarks-qr-row">
-                    <div class="remarks-box">
-                        <div class="footer-label">Remarks</div>
-                        <textarea wire:model="remarks"></textarea>
+                @if($showSalesEmployeeDropdown && count($salesEmployeeResults))
+                    <div class="ac-dropdown" style="max-width:200px;">
+                        @foreach($salesEmployeeResults as $e)
+                            <div class="ac-dropdown-item" wire:click="selectSalesEmployee({{ $e['id'] }})">
+                                <span class="ac-primary">{{ $e['name'] }}</span>
+                            </div>
+                        @endforeach
                     </div>
-                    <div class="qr-box">
-                        <div class="footer-label">QRCode</div>
-                        <input wire:model="qr_code">
-                    </div>
-                </div>
-
-                <div class="action-buttons">
-                    <button type="button" class="btn" wire:click="addAndNew">Add &amp; New</button>
-                    <button type="button" class="btn" wire:click="addDraftAndNew">Add Draft &amp; New</button>
-                    <button type="button" class="btn secondary" wire:click="cancel">Cancel</button>
-                </div>
-            </div>
-
-            <div class="footer-right">
-                <div class="totals-row">
-                    <span class="totals-label">Total Before Discount</span>
-                    <span class="totals-value">KES {{ number_format($total_before_discount, 2) }}</span>
-                </div>
-                <div class="totals-row">
-                    <span class="totals-label">Discount</span>
-                    <span class="discount-inline">
-                        <input type="number" step="0.001" wire:model.live="discount_percent">
-                        <span>%</span>
-                    </span>
-                </div>
-                <div class="totals-row">
-                    <span class="totals-label">Total Down Payment</span>
-                    <input type="number" step="0.001" class="totals-value editable" wire:model.live="total_down_payment">
-                </div>
-                <div class="totals-row">
-                    <span class="totals-label"><span class="orange-arrow">&#10148;</span>Freight</span>
-                    <input type="number" step="0.001" class="totals-value editable" wire:model.live="freight">
-                </div>
-                <div class="totals-row">
-                    <span class="totals-label"><input type="checkbox" wire:model="rounding"> Rounding</span>
-                    <span class="totals-value">KES 0.00</span>
-                </div>
-                <div class="totals-row">
-                    <span class="totals-label">Tax</span>
-                    <input type="number" step="0.001" class="totals-value editable" wire:model.live="tax">
-                </div>
-                <div class="totals-row">
-                    <span class="totals-label" style="font-weight:700;">Total</span>
-                    <span class="totals-value" style="font-weight:700;">KES {{ number_format($total_after_discount, 2) }}</span>
-                </div>
-                <div class="totals-row">
-                    <span class="totals-label">Applied Amount</span>
-                    <span class="totals-value">KES {{ number_format($applied_amount, 2) }}</span>
-                </div>
-                <div class="totals-row">
-                    <span class="totals-label">Balance Due</span>
-                    <span class="totals-value blue">KES {{ number_format($balance_due, 2) }}</span>
-                </div>
+                @endif
             </div>
         </div>
+
+        <div class="field-row">
+            <div class="field-label" style="width:120px;">Owner</div>
+            <div class="field-input-wrap">
+                <input class="field-input readonly" value="{{ $owner }}" disabled style="max-width:200px;">
+            </div>
+        </div>
+
+        <div class="checkbox-row">
+            <input type="checkbox" wire:model="payment_order_run">
+            <span>Payment Order Run</span>
+        </div>
+
+        <div class="remarks-qr-row">
+            <div class="remarks-box">
+                <div class="footer-label">Remarks</div>
+                <textarea wire:model="remarks"></textarea>
+            </div>
+            <div class="qr-box">
+                <div class="footer-label">QRCode</div>
+                <input wire:model="qr_code">
+            </div>
+        </div>
+
+        @error('remarks')
+            <div style="color:#b91c1c; font-size:12px; margin-top:4px;">{{ $message }}</div>
+        @enderror
+        @error('customer_id')
+            <div style="color:#b91c1c; font-size:12px; margin-top:4px;">Please choose a customer.</div>
+        @enderror
+        @error('sales_employee_id')
+            <div style="color:#b91c1c; font-size:12px; margin-top:4px;">Please choose a sales employee.</div>
+        @enderror
+        @foreach($errors->get('lines.*.discount') as $messages)
+            @foreach($messages as $message)
+                <div style="color:#b91c1c; font-size:12px; margin-top:4px;">{{ $message }}</div>
+            @endforeach
+        @endforeach
+
+        <div class="action-buttons">
+            <button type="button" class="btn" wire:click="addAndNew">Add &amp; New</button>
+            <button type="button" class="btn" wire:click="addDraftAndNew">Add Draft &amp; New</button>
+            <button type="button" class="btn" wire:click="cancel">Cancel</button>
+        </div>
+    </div>
+
+    <div class="footer-right">
+        <div class="totals-row">
+            <span class="totals-label">Total Before Discount</span>
+            <span class="totals-value">KES {{ number_format($total_before_discount, 2) }}</span>
+        </div>
+
+        <div class="totals-row">
+            <span class="totals-label">Discount</span>
+            <span class="totals-value-group">
+                <input type="number" step="0.001"
+                    class="totals-value editable"
+                    wire:model.live="discount_percent"
+                    x-on:focus="$event.target.select()">
+                <span class="unit-suffix">%</span>
+            </span>
+        </div>
+
+        <div class="totals-row">
+            <span class="totals-label">Total Down Payment</span>
+            <span class="totals-value-group">
+                <span class="currency-prefix">KES</span>
+                <input type="number" step="0.001"
+                    class="totals-value editable"
+                    wire:model.live="total_down_payment"
+                    x-on:focus="$event.target.select()">
+            </span>
+        </div>
+
+        <div class="totals-row">
+            <span class="totals-label"><span class="orange-arrow">&#10148;</span>Freight</span>
+            <span class="totals-value-group">
+                <span class="currency-prefix">KES</span>
+                <input type="number" step="0.001"
+                    class="totals-value editable"
+                    wire:model.live="freight"
+                    x-on:focus="$event.target.select()">
+            </span>
+        </div>
+
+        <div class="totals-row">
+            <span class="totals-label"><input type="checkbox" wire:model="rounding"> Rounding</span>
+            <span class="totals-value">KES 0.00</span>
+        </div>
+
+        <div class="totals-row">
+            <span class="totals-label">Tax</span>
+            <span class="totals-value-group">
+                <span class="currency-prefix">KES</span>
+                <input type="number" step="0.001"
+                    class="totals-value editable"
+                    wire:model.live="tax"
+                    x-on:focus="$event.target.select()">
+            </span>
+        </div>
+
+        <div class="totals-row">
+            <span class="totals-label" style="font-weight:700;">Total</span>
+            <span class="totals-value" style="font-weight:700;">KES {{ number_format($total_after_discount, 2) }}</span>
+        </div>
+
+        <div class="totals-row">
+            <span class="totals-label">Applied Amount</span>
+            <span class="totals-value">KES {{ number_format($applied_amount, 2) }}</span>
+        </div>
+
+        <div class="totals-row">
+            <span class="totals-label">Balance Due</span>
+            <span class="totals-value blue">KES {{ number_format($balance_due, 2) }}</span>
+        </div>
+
+         <div class="action-buttons">
+            <button type="button" class="btn" wire:click="addAndNew">Copy From</button>
+            <button type="button" class="btn secondary" wire:click="cancel">Copy To</button>
+        </div>
+    </div>
+</div>
     </div>
 </x-filament-panels::page>
