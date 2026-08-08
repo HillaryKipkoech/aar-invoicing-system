@@ -10,11 +10,6 @@ use App\Models\SalesEmployee;
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-// use Filament\Forms\Contracts\HasForms;
-// use Filament\Forms\Components\Select;
-// use Filament\Forms\Form;
-// use Filament\Forms\Concerns\InteractsWithForms;
-// use Filament\Schemas\Schema;
 
 class ManageInvoice extends Page
 {
@@ -41,6 +36,7 @@ class ManageInvoice extends Page
     public ?string $posting_date = null;
     public ?string $value_date = null;
     public ?string $document_date = null;
+    public string $customer_code = '';
 
     // ---- Lines ----
     public array $lines = [];
@@ -85,11 +81,6 @@ class ManageInvoice extends Page
         $this->posting_date = now()->format('Y-m-d');
         $this->value_date = now()->format('Y-m-d');
         $this->document_date = now()->format('Y-m-d');
-
-        // Only stamp a *fresh* doc number when creating. This is a
-        // display-only preview — save() recomputes it atomically at
-        // save time so two people creating an invoice at once can't
-        // collide on the same number.
         
         if (! $this->record) {
             $this->doc_no = Invoice::nextDocNo();
@@ -115,11 +106,10 @@ class ManageInvoice extends Page
                 'applied_amount' => $this->record->applied_amount ?? 0,
             ]);
             $this->customerSearch = Customer::find($this->customer_id)?->customer_code ?? '';
-    $this->customerNameSearch = Customer::find($this->customer_id)?->display_name ?? '';
-    $this->salesEmployeeSearch = SalesEmployee::find($this->sales_employee_id)?->name ?? '';
+            $this->customerSearch = $this->customer_code;
+            $this->customerNameSearch = Customer::find($this->customer_id)?->display_name ?? '';
+            $this->salesEmployeeSearch = SalesEmployee::find($this->sales_employee_id)?->name ?? '';
             $this->lines = $this->record->lines()->get()->map(fn ($l) => $l->toArray())->toArray();
-            // keepCustomerName: true — an existing record already has its own
-            // (possibly manually overridden) printed name; don't clobber it.
             $this->loadCustomer($this->customer_id, keepContactPerson: true, keepCustomerName: true);
             $this->loadSalesEmployee($this->sales_employee_id);
         } else {
@@ -315,25 +305,27 @@ class ManageInvoice extends Page
     protected function save(string $status): void
     {
         $this->validate([
-            'customer_id' => ['required'],
+             'customer_id' => ['required'],
+            'customer_code' => ['required'],
             'sales_employee_id' => ['required'],
             'remarks' => ['required'],
             'lines.*.discount' => ['numeric', 'max:50'],
         ], [
             'remarks.required' => 'Remarks is mandatory.',
+            'customer_code.required' => 'Please select a valid customer.',
             'lines.*.discount.max' => 'Discount cannot exceed 50%.',
         ]);
 
         $invoice = $this->record ?? new Invoice();
-
-        // Only mint a doc number for brand-new invoices, and do it inside
-        // a transaction with a row lock so two concurrent "Add & New"
-        // saves can never walk away with the same number.
         $docNo = $this->record?->doc_no ?? DB::transaction(function () {
             return Invoice::nextDocNo();
         });
 
         $invoice->fill([
+            'customer_id' => $this->customer_id,
+            'customer_code' => $this->customer_code,
+            'customer_name' => $this->customer_name,
+            'contact_person' => $this->contact_person,
             'customer_id' => $this->customer_id,
             'customer_name' => $this->customer_name,
             'contact_person' => $this->contact_person,
@@ -399,55 +391,69 @@ public function updatedCustomerNameSearch($value): void
         ->toArray();
 }
 
-public function selectCustomer(int $customerId): void
-{
-    $this->customer_id = $customerId;
-    $this->loadCustomer($customerId, keepContactPerson: false, keepCustomerName: false);
+// public function selectCustomer(int $customerId): void
+// {
+//     $this->customer_id = $customerId;
+//     $this->loadCustomer($customerId, keepContactPerson: false, keepCustomerName: false);
 
-    $customer = Customer::find($customerId);
-    $this->customerSearch = $customer?->customer_code ?? '';
-    $this->customerNameSearch = $customer?->display_name ?? '';
+//     $customer = Customer::find($customerId);
+//     $this->customerSearch = $customer?->customer_code ?? '';
+//     $this->customerNameSearch = $customer?->display_name ?? '';
 
-    $this->showCustomerDropdown = false;
-    $this->showCustomerNameDropdown = false;
-    $this->customerResults = [];
-    $this->customerNameResults = [];
-}
+//     $this->showCustomerDropdown = false;
+//     $this->showCustomerNameDropdown = false;
+//     $this->customerResults = [];
+//     $this->customerNameResults = [];
+// }
+        public function selectCustomer(int $customerId): void
+        {
+            $this->customer_id = $customerId;
+            $this->loadCustomer($customerId, keepContactPerson: false, keepCustomerName: false);
 
-public function updatedSalesEmployeeSearch($value): void
-{
-    $this->showSalesEmployeeDropdown = true;
-    if (strlen($value) < 1) {
-        $this->salesEmployeeResults = [];
-        return;
-    }
-    $this->salesEmployeeResults = SalesEmployee::query()
-        ->where('name', 'like', "%{$value}%")
-        ->limit(20)
-        ->get(['id', 'name'])
-        ->toArray();
-}
+            $customer = Customer::find($customerId);
+            $this->customer_code = $customer?->customer_code ?? '';
+            $this->customerSearch = $customer?->customer_code ?? '';
+            $this->customerNameSearch = $customer?->display_name ?? '';
 
-public function selectSalesEmployee(int $employeeId): void
-{
-    $this->sales_employee_id = $employeeId;
-    $this->loadSalesEmployee($employeeId);
+            $this->showCustomerDropdown = false;
+            $this->showCustomerNameDropdown = false;
+            $this->customerResults = [];
+            $this->customerNameResults = [];
+        }
+        public function updatedSalesEmployeeSearch($value): void
+        {
+            $this->showSalesEmployeeDropdown = true;
+            if (strlen($value) < 1) {
+                $this->salesEmployeeResults = [];
+                return;
+            }
+            $this->salesEmployeeResults = SalesEmployee::query()
+                ->where('name', 'like', "%{$value}%")
+                ->limit(20)
+                ->get(['id', 'name'])
+                ->toArray();
+        }
 
-    $this->salesEmployeeSearch = SalesEmployee::find($employeeId)?->name ?? '';
-    $this->showSalesEmployeeDropdown = false;
-    $this->salesEmployeeResults = [];
-}
+        public function selectSalesEmployee(int $employeeId): void
+        {
+            $this->sales_employee_id = $employeeId;
+            $this->loadSalesEmployee($employeeId);
+
+            $this->salesEmployeeSearch = SalesEmployee::find($employeeId)?->name ?? '';
+            $this->showSalesEmployeeDropdown = false;
+            $this->salesEmployeeResults = [];
+        }
 
 
-    public function cancel()
-    {
-        return redirect(static::getResource()::getUrl('index'));
-    }
+        public function cancel()
+        {
+            return redirect(static::getResource()::getUrl('index'));
+        }
 
-    public function getTitle(): string
-    {
-        return '';
-    }
+        public function getTitle(): string
+        {
+            return 'AR Invoice';
+        }
 
     public function getBreadcrumbs(): array
     {

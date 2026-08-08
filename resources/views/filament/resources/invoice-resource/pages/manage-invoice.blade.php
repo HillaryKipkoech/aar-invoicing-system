@@ -1,9 +1,9 @@
 <x-filament-panels::page>
-    <div class="ar-invoice" style="border:1px solid #b9b9b9;">
-        <div class="ar-invoice"
+    <div class="ar-invoice"
      style="border:1px solid #b9b9b9;"
      x-data
      @click.outside="$wire.showCustomerDropdown = false; $wire.showCustomerNameDropdown = false; $wire.showSalesEmployeeDropdown = false;">
+
 
         {{-- ===== Title bar ===== --}}
         <!-- <div class="titlebar">
@@ -369,11 +369,10 @@
             <span class="totals-value blue">KES {{ number_format($balance_due, 2) }}</span>
         </div>
 
-         <div class="action-buttons">
-            <button type="button" class="btn" wire:click="addAndNew">Copy From</button>
-            <button type="button" class="btn secondary" wire:click="cancel">Copy To</button>
+         <div class="copy-buttons">
+            <button type="button" class="btn secondary" wire:click="copyFrom">Copy From</button>
+            <button type="button" class="btn secondary" wire:click="copyTo">Copy To</button>
         </div>
     </div>
 </div>
-    </div>
 </x-filament-panels::page>

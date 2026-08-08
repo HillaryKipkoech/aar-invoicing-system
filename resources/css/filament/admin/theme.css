@@ -17,6 +17,7 @@
     --ar-blue-text: #1d4ed8;
     --ar-grey-bg: #eef1f4;
     --ar-grey-border: #b9b9b9;
+    --ar-accent-width: 2px; /* thin gold accent, used on top of navy bars */
 }
 
 
@@ -26,15 +27,12 @@
 
 .fi-topbar nav {
     background-color: var(--ar-navy) !important;
-    border-bottom: 3px solid var(--ar-gold) !important;
+    border-top: var(--ar-accent-width) solid var(--ar-gold) !important;
+    border-bottom: none !important;
     min-height: 58px;
 }
 
 .fi-topbar nav * {
-    color: #ffffff !important;
-}
-
-.fi-topbar nav button {
     color: #ffffff !important;
 }
 
@@ -45,18 +43,34 @@
 
 
 /* =========================================================
-   FILAMENT PAGE HEADER
+   FILAMENT PAGE HEADER — flush, continuous with topbar
    ========================================================= */
 
+.fi-main {
+    padding-top: 0 !important;
+}
+
 .fi-header {
-    background-color: transparent !important;
+    background-color: var(--ar-navy) !important;
+    border-top: var(--ar-accent-width) solid var(--ar-gold) !important;
     border-bottom: none !important;
-    padding: 0 !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0.75rem 1.5rem !important;
+    width: 100% !important;
 }
 
 .fi-header-heading {
-    color: #263b4d !important;
+    color: #ffffff !important;
     font-weight: 600;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.fi-header button,
+.fi-header svg {
+    color: #ffffff !important;
 }
 
 
@@ -229,9 +243,6 @@
     font-size: 12px;
     background: #ffffff;
     color: #1a1a1a;
-
-    /* The invoice page itself has NO border of its own —
-       the wrapping <div> in the Blade template supplies it. */
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -245,7 +256,8 @@
 
 
 /* =========================================================
-   TITLE BAR
+   TITLE BAR (custom, only used if Filament's native header
+   is hidden — thin gold accent on top, navy below)
    ========================================================= */
 
 .ar-invoice .titlebar {
@@ -259,7 +271,7 @@
     align-items: center;
 
     border: none !important;
-    border-bottom: 3px solid var(--ar-gold) !important;
+    border-top: var(--ar-accent-width) solid var(--ar-gold) !important;
     outline: none !important;
     box-shadow: none !important;
 }
@@ -288,7 +300,6 @@
     padding: 10px 14px 4px 14px;
     flex-wrap: wrap;
     background: #ffffff;
-
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -344,16 +355,11 @@
     background: #ffffff;
 }
 
-/* Genuinely computed / system-owned values (Status, BP Currency
-   amount, etc.) are shaded grey. */
 .ar-invoice .field-input:disabled {
     background: #eef1f4;
     color: #333333;
 }
 
-/* Fields that are read-only but NOT a computed/system value
-   (Name, No., KRA PIN, Owner) stay plain white per the design —
-   use readonly (not disabled) plus this class in the markup. */
 .ar-invoice .field-input.readonly-plain {
     background: #ffffff;
     color: #1a1a1a;
@@ -395,8 +401,6 @@
     gap: 0;
 }
 
-/* "No." field: a bordered dropdown-style prefix (IN ▾) glued to
-   the document-number input, both on white — not a grey pill. */
 .ar-invoice .no-prefix {
     border: 1px solid #b9b9b9;
     border-right: none;
@@ -419,8 +423,6 @@
     border-left: none;
 }
 
-/* "BP Currency" label rendered as its own bordered dropdown
-   selector (label + caret), per the design. */
 .ar-invoice .field-label-dropdown {
     width: 110px;
     flex-shrink: 0;
@@ -540,8 +542,6 @@
     box-shadow: none !important;
 }
 
-/* Small "expand grid" icon at the top-right corner of the grid,
-   sitting just above the header row. */
 .ar-invoice .grid-expand-icon {
     position: absolute;
     top: -2px;
@@ -565,9 +565,7 @@
     border-collapse: collapse;
     border-spacing: 0;
     font-size: 12px;
-
-    /* Only outer bordered component in the invoice */
-    border: 1px solid #b9b9b9;
+    border: 1px solid #b9b9b9 !important;
     background: #ffffff;
 }
 
@@ -624,8 +622,6 @@
 
 /* =========================================================
    TABLE ROW STRIPING
-   (this is the ONLY row/column shading in the grid — individual
-   cells never get their own grey fill, including disabled ones)
    ========================================================= */
 
 .ar-invoice table.grid tbody tr:nth-child(even) td {
@@ -661,18 +657,11 @@
     background: #ffffff;
 }
 
-/* Disabled inputs inside the grid (Whse, Qty in Whse, UoM Code)
-   stay on white, plain text — no grey pill like the header. */
 .ar-invoice table.grid td input:disabled,
 .ar-invoice table.grid td select:disabled {
     background: transparent !important;
     color: #1a1a1a;
 }
-
-
-/* =========================================================
-   NUMBER INPUT
-   ========================================================= */
 
 .ar-invoice table.grid td input[type="number"] {
     -moz-appearance: textfield;
@@ -686,7 +675,7 @@
 
 
 /* =========================================================
-   ITEM NUMBER CELL  (Item No. — arrow + select)
+   ITEM NUMBER CELL
    ========================================================= */
 
 .ar-invoice .go-cell {
@@ -711,7 +700,7 @@
 
 
 /* =========================================================
-   WHSE CELL  (arrow + value, same pattern as Item No.)
+   WHSE CELL
    ========================================================= */
 
 .ar-invoice .whse-cell {
@@ -729,7 +718,7 @@
 
 
 /* =========================================================
-   MONEY CELLS  ("KES 1,850.0000" — prefix + numeric input)
+   MONEY CELLS
    ========================================================= */
 
 .ar-invoice table.grid td.money-cell {
@@ -752,8 +741,6 @@
     text-align: right;
 }
 
-/* Blue money columns: Unit Price, Price after Discount,
-   Gross Price after Disc. — blue regardless of editable state. */
 .ar-invoice .money-cell.blue-money,
 .ar-invoice .money-cell.blue-money input,
 .ar-invoice .money-cell.blue-money .currency-prefix {
@@ -818,7 +805,6 @@
     margin-top: 10px;
     flex-wrap: wrap;
     background: #ffffff;
-
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -828,10 +814,12 @@
     width: 55%;
 }
 
-
-
 .ar-invoice .footer-left .field-row {
     margin-bottom: 6px;
+}
+
+.ar-invoice .footer-right {
+    width: 320px;
 }
 
 
@@ -902,9 +890,8 @@
     background: var(--ar-navy);
     color: #ffffff;
     border: none;
-    font-size: 0.75rem;
-    padding: 6px 14px;
     font-size: 12px;
+    padding: 6px 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -914,7 +901,7 @@
 .ar-invoice .btn.secondary {
     background: #f0f0f0;
     color: #333333;
-    font-size: 0.75rem;
+    font-size: 12px;
     border: 1px solid #b9b9b9;
 }
 
@@ -932,12 +919,51 @@
    TOTALS
    ========================================================= */
 
+.ar-invoice .totals-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 4px;
+    gap: 6px;
+}
+
+.ar-invoice .totals-label {
+    width: 130px;
+    flex: 0 0 130px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ar-invoice .totals-value,
+.ar-invoice .totals-value-group {
+    width: 184px;
+    flex: 0 0 184px;
+    min-width: 0;
+}
+
+.ar-invoice .totals-value {
+    border: 1px solid #b9b9b9;
+    background: #eef1f4;
+    text-align: right;
+    padding: 2px 6px;
+    font-size: 12px;
+    color: #1a1a1a;
+}
+
+.ar-invoice .totals-value.white {
+    background: #ffffff;
+}
+
+.ar-invoice .totals-value.blue {
+    color: var(--ar-blue-text);
+    font-weight: 600;
+}
 
 .ar-invoice .totals-value-group {
     display: flex;
     align-items: center;
-    flex: 1 1 auto;
-    min-width: 0;
     border: 1px solid #b9b9b9;
     background: #ffffff;
     padding: 0 6px;
@@ -961,6 +987,7 @@
 .ar-invoice .totals-value-group input.totals-value.editable {
     flex: 1 1 auto;
     min-width: 0;
+    width: auto;
     border: none !important;
     background: transparent !important;
     text-align: right;
@@ -970,24 +997,7 @@
 
 .ar-invoice .totals-value-group input.totals-value.editable:focus {
     outline: none;
-    background: #fdf3d6 !important; /* subtle highlight to match your gold value-date accent */
-}
-
-.ar-invoice .totals-value.white {
-    background: #ffffff;
-}
-
-.ar-invoice .totals-value.blue {
-    color: var(--ar-blue-text);
-    font-weight: 600;
-}
-
-.ar-invoice .totals-value-group {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex: 1 1 auto;
-    min-width: 0;
+    background: #fdf3d6 !important;
 }
 
 .ar-invoice .discount-inline {
@@ -1020,35 +1030,6 @@
     font-size: 12px;
     flex-shrink: 0;
     border: none;
-}
-
-
-.ar-invoice .footer-right {
-    width: 320px;
-}
-
-.ar-invoice .totals-row {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 4px;
-    gap: 6px;
-}
-
-.ar-invoice .totals-label {
-    width: 130px;          /* fixed label column */
-    flex: 0 0 130px;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.ar-invoice .totals-value,
-.ar-invoice .totals-value-group {
-    width: 184px;          /* fixed value column (130 + 184 + 6 gap ≈ 320) */
-    flex: 0 0 184px;
-    min-width: 0;
 }
 
 .ar-invoice .totals-icon {
@@ -1090,7 +1071,7 @@
     border-radius: 7px;
     font-size: 1.5rem;
     font-weight: 700;
-    border-bottom: 3px solid var(--ar-gold);
+    border-top: var(--ar-accent-width) solid var(--ar-gold);
 }
 
 .custom-login-page .login-brand h1 {
@@ -1238,7 +1219,7 @@
     background: var(--ar-navy);
     color: #ffffff;
     padding: 1.25rem 1.5rem;
-    border-bottom: 3px solid var(--ar-gold);
+    border-top: var(--ar-accent-width) solid var(--ar-gold);
     margin-bottom: 1.25rem;
 }
 
@@ -1307,38 +1288,8 @@
 
 
 /* =========================================================
-   FINAL BORDER RESET
-   =========================================================
-   The invoice:
-   - Title bar   = NO outer border (gold underline only)
-   - Header      = NO outer border
-   - Tabs        = NO outer border
-   - Toolbar     = NO outer border
-   - Footer      = NO outer border
-   - TABLE       = ONLY area with an outer border
+   AUTOCOMPLETE DROPDOWNS
    ========================================================= */
-
-.ar-invoice,
-.ar-invoice .titlebar,
-.ar-invoice .header-wrap,
-.ar-invoice .tabs,
-.ar-invoice .table-toolbar,
-.ar-invoice .table-wrap,
-.ar-invoice .footer-wrap {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
-.ar-invoice .titlebar {
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-bottom: 3px solid var(--ar-gold) !important;
-}
-
-.ar-invoice table.grid {
-    border: 1px solid #b9b9b9 !important;
-}
 
 .ar-invoice .ac-dropdown {
     position: absolute;
@@ -1376,4 +1327,24 @@
     color: #6b7280;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   FINAL BORDER RESET
+   =========================================================
+   - Topbar / Header / Dashboard header / Login logo:
+     thin gold accent on TOP, navy fill, no bottom border
+   - TABLE: only area with a full outer border
+   ========================================================= */
+
+.ar-invoice,
+.ar-invoice .titlebar,
+.ar-invoice .header-wrap,
+.ar-invoice .tabs,
+.ar-invoice .table-toolbar,
+.ar-invoice .table-wrap,
+.ar-invoice .footer-wrap {
+    outline: none !important;
+    box-shadow: none !important;
 }
