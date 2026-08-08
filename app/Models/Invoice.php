@@ -8,13 +8,18 @@ class Invoice extends Model
 {
     protected $fillable = [
         'doc_no', 'customer_id', 'customer_code', 'customer_name', 'posting_date',
-        'sales_employee_id', 'remarks', 'total_before_discount', 'discount_percent',
-        'total_after_discount', 'needs_approval', 'status',
+        'value_date', 'document_date', 'sales_employee_id', 'owner', 'remarks',
+        'qr_code', 'total_before_discount', 'discount_percent', 'total_down_payment',
+        'freight', 'rounding', 'tax', 'total_after_discount', 'applied_amount',
+        'balance_due', 'needs_approval', 'status',
     ];
 
     protected $casts = [
         'posting_date' => 'date',
+        'value_date' => 'date',
+        'document_date' => 'date',
         'needs_approval' => 'boolean',
+        'rounding' => 'boolean',
     ];
 
     // Threshold above which the invoice requires approval

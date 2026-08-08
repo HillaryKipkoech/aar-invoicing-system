@@ -1,0 +1,57 @@
+/* resources/css/filament/admin/theme.css
+   Custom Filament panel theme replicating the SAP B1 AR Invoice look:
+   navy title bar with a gold accent line, and light tab styling. */
+
+@import '/vendor/filament/filament/resources/css/theme.css';
+@config 'tailwind.config.js';
+:root {
+    --ar-navy: #2c3e56;
+    --ar-gold: #d4a017;
+}
+
+/* Top bar */
+.fi-topbar nav {
+    background-color: var(--ar-navy) !important;
+    border-bottom: 3px solid var(--ar-gold) !important;
+}
+
+.fi-topbar nav * {
+    color: #ffffff !important;
+}
+
+/* Page heading area, styled like the "AR Invoice" title strip */
+.fi-header {
+    background-color: var(--ar-navy);
+    border-bottom: 3px solid var(--ar-gold);
+    padding: 0.75rem 1.5rem;
+}
+
+.fi-header-heading {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Tabs (Contents / Logistics / Accounting / Attachments / TIMS / ETIMS) */
+.fi-tabs {
+    background-color: #f3f4f6;
+    border-bottom: 1px solid #d1d5db;
+}
+
+.fi-tabs-item {
+    color: #4b5563;
+}
+
+.fi-tabs-item[aria-selected="true"] {
+    background-color: #ffffff;
+    color: var(--ar-navy);
+    border-bottom: 2px solid var(--ar-navy);
+    font-weight: 600;
+}
+
+/* Disabled/computed fields (Total, Price after Discount, etc.) shown in
+   the muted blue SAP B1 uses for read-only calculated values */
+.fi-input:disabled {
+    background-color: #eef1f5 !important;
+    color: #1d4ed8 !important;
+    font-weight: 500;
+}

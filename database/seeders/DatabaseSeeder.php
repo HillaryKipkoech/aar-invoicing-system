@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
         );
 
         Customer::firstOrCreate(['customer_code' => 'CC00001'], [
-            'customer_name' => 'Walk In Customer - HQ',
+            'display_name' => 'Walk In Customer - HQ',
+            'customer_name' => 'TEST TEST',
             'contact_person' => null,
             'currency' => 'KES',
             'kra_pin' => null,
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
             'item_description' => 'Umi All Purpose Home Baking Flour 2Kg',
             'uom_code' => 'Bales',
             'unit_price' => 1850.000,
+            'vat_code' => 'O0',
             'warehouse' => 'FG WHS',
             'qty_in_whse' => 648,
         ]);
