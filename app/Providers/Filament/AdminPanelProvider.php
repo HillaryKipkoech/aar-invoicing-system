@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::hex('#d4a017'), // gold accent
             ])
             ->font('Segoe UI') // closest web-safe match to the SAP B1 font
-            // ->viteTheme('resources/css/filament/admin/theme.css')
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([Pages\Dashboard::class])

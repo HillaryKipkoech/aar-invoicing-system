@@ -24,5 +24,12 @@ export default {
         './resources/views/filament/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
     ],
+
+    input: [
+        'resources/css/app.css',
+        'resources/css/filament/admin/theme.css',
+        'resources/css/filament/admin/ar-invoice.css',
+        'resources/js/app.js',
+    ],
     plugins: [],
 };

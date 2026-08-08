@@ -13,6 +13,8 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Awcodes\TableRepeater\Components\TableRepeater;
+use Awcodes\TableRepeater\Header;
 
 class InvoiceResource extends Resource
 {
@@ -206,14 +208,27 @@ class InvoiceResource extends Resource
             Forms\Components\Tabs::make('body')->tabs([
 
                 Forms\Components\Tabs\Tab::make('Contents')->schema([
-                    Forms\Components\Repeater::make('lines')
+                    TableRepeater::make('lines')
                         ->relationship('lines')
                         ->hiddenLabel()
                         ->addActionLabel('+ Add Row')
-                        ->columns(6)
+                        ->headers([
+                            Header::make('Item No.')->width('140px'),
+                            Header::make('Item Description')->width('260px'),
+                            Header::make('Quantity')->width('90px'),
+                            Header::make('Whse')->width('90px'),
+                            Header::make('Qty in Whse')->width('90px'),
+                            Header::make('UoM Code')->width('90px'),
+                            Header::make('Unit Price')->width('120px'),
+                            Header::make('Discount %')->width('100px'),
+                            Header::make('Price after Disc.')->width('120px'),
+                            Header::make('VAT Code')->width('90px'),
+                            Header::make('Gross Price after Disc.')->width('130px'),
+                            Header::make('Total (LC)')->width('120px'),
+                            Header::make('Gross Total (LC)')->width('130px'),
+                        ])
                         ->schema([
                             Forms\Components\Select::make('item_no')
-                                ->label('Item No.')
                                 ->options(fn () => Item::query()->pluck('item_no', 'item_no'))
                                 ->searchable()
                                 ->createOptionForm([Forms\Components\TextInput::make('item_no')->required()])
@@ -232,50 +247,48 @@ class InvoiceResource extends Resource
                                 }),
 
                             Forms\Components\TextInput::make('item_description')
-                                ->label('Item Description')
-                                ->required()
-                                ->columnSpan(2),
+                                ->required(),
 
                             Forms\Components\TextInput::make('quantity')
-                                ->label('Quantity')->numeric()->minValue(0)->required()
+                                ->numeric()->minValue(0)->required()
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(fn (Get $get, Set $set) => self::recalculateTotals($get, $set)),
 
                             Forms\Components\TextInput::make('warehouse')
-                                ->label('Whse')->disabled()->dehydrated(),
+                                ->disabled()->dehydrated(),
 
                             Forms\Components\TextInput::make('qty_in_whse')
-                                ->label('Qty in Whse')->numeric()->disabled()->dehydrated(),
+                                ->numeric()->disabled()->dehydrated(),
 
                             Forms\Components\TextInput::make('uom_code')
-                                ->label('UoM Code')->disabled()->dehydrated(),
+                                ->disabled()->dehydrated(),
 
                             Forms\Components\TextInput::make('price_before_discount')
-                                ->label('Unit Price')->numeric()->step(0.001)->minValue(0)->required()
+                                ->numeric()->step(0.001)->minValue(0)->required()
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(fn (Get $get, Set $set) => self::recalculateTotals($get, $set)),
 
                             Forms\Components\TextInput::make('discount')
-                                ->label('Discount %')->numeric()->step(0.001)->minValue(0)->maxValue(50)->default(0)
+                                ->numeric()->step(0.001)->minValue(0)->maxValue(50)->default(0)
                                 ->live(onBlur: true)
                                 ->rules(['numeric', 'max:50'])
                                 ->validationMessages(['max' => 'Discount cannot exceed 50%.'])
                                 ->afterStateUpdated(fn (Get $get, Set $set) => self::recalculateTotals($get, $set)),
 
                             Forms\Components\TextInput::make('price_after_discount')
-                                ->label('Price after Discount')->numeric()->step(0.001)->disabled()->dehydrated(),
+                                ->numeric()->step(0.001)->disabled()->dehydrated(),
 
                             Forms\Components\TextInput::make('vat_code')
-                                ->label('VAT Code')->default('O0'),
+                                ->default('O0'),
 
                             Forms\Components\TextInput::make('gross_price_after_discount')
-                                ->label('Gross Price after Disc.')->numeric()->step(0.001)->disabled()->dehydrated(),
+                                ->numeric()->step(0.001)->disabled()->dehydrated(),
 
                             Forms\Components\TextInput::make('line_total')
-                                ->label('Total (LC)')->numeric()->step(0.001)->disabled()->dehydrated(),
+                                ->numeric()->step(0.001)->disabled()->dehydrated(),
 
                             Forms\Components\TextInput::make('gross_total')
-                                ->label('Gross Total (LC)')->numeric()->step(0.001)->disabled()->dehydrated(),
+                                ->numeric()->step(0.001)->disabled()->dehydrated(),
                         ])
                         ->live()
                         ->afterStateUpdated(fn (Get $get, Set $set) => self::recalculateTotals($get, $set))
@@ -283,7 +296,8 @@ class InvoiceResource extends Resource
                             fn (Get $get, Set $set) => self::recalculateTotals($get, $set)
                         ))
                         ->defaultItems(1)
-                        ->reorderable(false),
+                        ->reorderable(false)
+                        ->streamlined(),
                 ]),
 
                 // ---- Placeholder tabs for future extension — see README "Where to extend" ----
@@ -420,12 +434,12 @@ class InvoiceResource extends Resource
             ]);
     }
 
-    public static function getPages(): array
+   public static function getPages(): array
     {
         return [
             'index' => Pages\ListInvoices::route('/'),
-            'create' => Pages\CreateInvoice::route('/create'),
-            'edit' => Pages\EditInvoice::route('/{record}/edit'),
+            'create' => Pages\ManageInvoice::route('/create'),
+            'edit' => Pages\ManageInvoice::route('/{record}/edit'),
         ];
     }
 }

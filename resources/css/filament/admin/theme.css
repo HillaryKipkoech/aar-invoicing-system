@@ -1,57 +1,456 @@
-/* resources/css/filament/admin/theme.css
-   Custom Filament panel theme replicating the SAP B1 AR Invoice look:
-   navy title bar with a gold accent line, and light tab styling. */
-
+/* resources/css/filament/admin/theme.css */
 @import '/vendor/filament/filament/resources/css/theme.css';
-@config 'tailwind.config.js';
+@config '../../../../tailwind.config.js';
+
 :root {
-    --ar-navy: #2c3e56;
-    --ar-gold: #d4a017;
+    --ar-navy: #2c5170;
+    --ar-gold: #d9a441;
+    --ar-blue-text: #1d4ed8;
 }
 
-/* Top bar */
+
+.ar-invoice * { box-sizing: border-box; }
+.ar-invoice {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 12px;
+  background: #ffffff;
+  color: #1a1a1a;
+}
+.ar-invoice .titlebar {
+  background: #2c5170;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 12px;
+  display: flex;
+  justify-content: space-between;
+   align-items: center;
+  border-bottom: 3px solid #d9a441;
+}
+
+
+/* ===== Top bar / page header ===== */
 .fi-topbar nav {
     background-color: var(--ar-navy) !important;
     border-bottom: 3px solid var(--ar-gold) !important;
 }
+.fi-topbar nav * { color: #ffffff !important; }
 
-.fi-topbar nav * {
-    color: #ffffff !important;
-}
-
-/* Page heading area, styled like the "AR Invoice" title strip */
 .fi-header {
     background-color: var(--ar-navy);
     border-bottom: 3px solid var(--ar-gold);
     padding: 0.75rem 1.5rem;
 }
-
 .fi-header-heading {
     color: #ffffff !important;
     font-weight: 600;
 }
 
-/* Tabs (Contents / Logistics / Accounting / Attachments / TIMS / ETIMS) */
+/* ===== Tabs (Contents / Logistics / Accounting ...) ===== */
 .fi-tabs {
-    background-color: #f3f4f6;
-    border-bottom: 1px solid #d1d5db;
+    background-color: #e8e8e8;
+    border-bottom: 1px solid #b9b9b9;
+    gap: 2px;
 }
-
 .fi-tabs-item {
-    color: #4b5563;
+    color: #333333;
+    background-color: #e8e8e8;
+    border: 1px solid #b9b9b9;
+    border-bottom: none;
+    font-size: 0.75rem;
 }
-
 .fi-tabs-item[aria-selected="true"] {
     background-color: #ffffff;
-    color: var(--ar-navy);
-    border-bottom: 2px solid var(--ar-navy);
+    color: #1a1a1a;
     font-weight: 600;
+    position: relative;
+    top: 1px;
 }
 
-/* Disabled/computed fields (Total, Price after Discount, etc.) shown in
-   the muted blue SAP B1 uses for read-only calculated values */
-.fi-input:disabled {
-    background-color: #eef1f5 !important;
-    color: #1d4ed8 !important;
+/* ===== Form field labels & inputs (small, dense, SAP-style) ===== */
+.fi-fo-field-wrp label {
+    font-size: 0.75rem;
+    color: #1a1a1a;
+}
+.fi-input,
+.fi-select-input {
+    font-size: 0.75rem !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    border-color: #b9b9b9 !important;
+}
+
+/* Read-only / disabled fields (Name, BP Currency, Owner, computed totals) */
+.fi-input:disabled,
+.fi-select-input:disabled {
+    background-color: #f4f4f4 !important;
+    color: #333333 !important;
+}
+
+/* Value Date gets the highlighted gold-outline treatment in the mockup */
+[data-field-wrapper="value_date"] .fi-input {
+    background-color: #fdf3d6 !important;
+    border-color: var(--ar-gold) !important;
+}
+
+/* ===== Approval banner ===== */
+[wire\:key*="approval_label"] {
+    color: #b91c1c;
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+/* ===== Repeater grid → mimic the dense SAP table ===== */
+.fi-fo-repeater .fi-fo-repeater-item {
+    border: 1px solid #dde2e6;
+}
+.fi-fo-repeater .fi-fo-repeater-item:nth-child(even) {
+    background-color: #f7f9fb;
+}
+.fi-fo-repeater .fi-fo-repeater-item:hover {
+    background-color: #eef6ff;
+}
+.fi-fo-repeater-header-actions,
+.fi-fo-repeater-item-header {
+    background-color: #eef1f4 !important;
+    border-color: #cfd4d9 !important;
+}
+
+/* Computed/blue-text cells: price after discount, gross price, etc. */
+[data-field-wrapper="price_after_discount"] .fi-input,
+[data-field-wrapper="gross_price_after_discount"] .fi-input,
+[data-field-wrapper="line_total"] .fi-input,
+[data-field-wrapper="gross_total"] .fi-input {
+    color: var(--ar-blue-text) !important;
     font-weight: 500;
+    background-color: #f4f4f4 !important;
+}
+
+/* ===== Totals block (right footer column) ===== */
+[data-field-wrapper="total_before_discount"] .fi-input,
+[data-field-wrapper="total_after_discount"] .fi-input,
+[data-field-wrapper="applied_amount"] .fi-input {
+    background-color: #f4f4f4 !important;
+    text-align: right !important;
+    font-size: 0.75rem !important;
+}
+[data-field-wrapper="total_after_discount"] .fi-input {
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+}
+[data-field-wrapper="balance_due"] .fi-input {
+    color: var(--ar-blue-text) !important;
+    font-weight: 600 !important;
+    background-color: #f4f4f4 !important;
+    text-align: right !important;
+}
+
+/* ===== Buttons: Add & New / Add Draft & New styled like the navy SAP buttons ===== */
+.fi-btn.fi-color-primary {
+    background-color: var(--ar-navy) !important;
+    font-size: 0.75rem !important;
+}
+.fi-btn.fi-color-gray {
+    background-color: #f0f0f0 !important;
+    color: #333333 !important;
+    border: 1px solid #b9b9b9 !important;
+}
+
+/* css to style invoice */
+/* resources/css/filament/admin/ar-invoice.css
+   Direct port of the AR Invoice mockup CSS, namespaced under .ar-invoice
+   so it never collides with Filament's own utility classes. */
+
+.ar-invoice * { box-sizing: border-box; }
+.ar-invoice {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 12px;
+  background: #ffffff;
+  color: #1a1a1a;
+}
+
+/* ===== Title bar ===== */
+.ar-invoice .titlebar {
+  background: #2c5170;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #d9a441;
+}
+.ar-invoice .titlebar .controls span {
+  display: inline-block;
+  width: 14px;
+  text-align: center;
+  margin-left: 10px;
+  cursor: default;
+  opacity: 0.9;
+}
+.ar-invoice .titlebar .controls .close:hover { color: #ff8080; }
+
+/* ===== Header ===== */
+.ar-invoice .header-wrap {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px 4px 14px;
+  flex-wrap: wrap;
+}
+.ar-invoice .header-left, .ar-invoice .header-right { width: 48%; }
+.ar-invoice .header-right { max-width: 260px; }
+
+.ar-invoice .field-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.ar-invoice .field-label {
+  width: 110px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #1a1a1a;
+}
+.ar-invoice .field-label.bold { font-weight: 700; }
+.ar-invoice .field-input-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.ar-invoice .field-input {
+  width: 100%;
+  max-width: 320px;
+  border: 1px solid #b9b9b9;
+  padding: 2px 4px;
+  font-size: 12px;
+  height: 20px;
+  background: #fff;
+}
+.ar-invoice .field-input:disabled, .ar-invoice .field-input.readonly {
+  background: #f4f4f4;
+  color: #333;
+}
+.ar-invoice .go-arrow {
+  color: #e08a1e;
+  font-weight: bold;
+  margin-right: 4px;
+  cursor: pointer;
+  user-select: none;
+  background: none;
+  border: none;
+}
+.ar-invoice .dropdown-caret {
+  margin-left: -20px;
+  pointer-events: none;
+  color: #555;
+  font-size: 10px;
+}
+.ar-invoice .header-right .field-input { max-width: 130px; }
+.ar-invoice .no-field-group { display: flex; align-items: center; gap: 4px; }
+.ar-invoice .no-prefix {
+  border: 1px solid #b9b9b9;
+  background: #f4f4f4;
+  padding: 2px 6px;
+  font-size: 12px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+.ar-invoice .value-date-highlight {
+  background: #fdf3d6 !important;
+  border: 1px solid #d9a441 !important;
+}
+.ar-invoice .calendar-icon { margin-left: 4px; color: #555; font-size: 12px; }
+
+/* ===== Approval label ===== */
+.ar-invoice .approval-label {
+  color: #b91c1c;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 4px 14px;
+}
+
+/* ===== Tabs ===== */
+.ar-invoice .tabs {
+  display: flex;
+  margin: 10px 14px 0 14px;
+  border-bottom: 1px solid #b9b9b9;
+}
+.ar-invoice .tab {
+  padding: 6px 22px;
+  font-size: 12px;
+  background: #e8e8e8;
+  border: 1px solid #b9b9b9;
+  border-bottom: none;
+  margin-right: 2px;
+  cursor: pointer;
+  color: #333;
+}
+.ar-invoice .tab.active {
+  background: #ffffff;
+  font-weight: 600;
+  border-bottom: 2px solid #ffffff;
+  position: relative;
+  top: 1px;
+}
+
+/* ===== Table toolbar ===== */
+.ar-invoice .table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 14px;
+  font-size: 12px;
+}
+.ar-invoice .table-toolbar select {
+  font-size: 12px;
+  padding: 1px 4px;
+  border: 1px solid #b9b9b9;
+}
+
+/* ===== Table ===== */
+.ar-invoice .table-wrap { padding: 0 14px; overflow-x: auto; }
+.ar-invoice table.grid {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 1400px;
+  font-size: 12px;
+}
+.ar-invoice table.grid th {
+  background: #eef1f4;
+  border: 1px solid #cfd4d9;
+  padding: 4px 6px;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.ar-invoice table.grid td {
+  border: 1px solid #dde2e6;
+  padding: 3px 6px;
+  height: 20px;
+  white-space: nowrap;
+}
+.ar-invoice table.grid td input,
+.ar-invoice table.grid td select {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  padding: 1px 2px;
+}
+.ar-invoice table.grid td input:focus,
+.ar-invoice table.grid td select:focus {
+  outline: 1px solid #2c5170;
+  background: #fff;
+}
+.ar-invoice table.grid tbody tr:nth-child(even) td { background: #f7f9fb; }
+.ar-invoice table.grid tbody tr:hover td { background: #eef6ff; }
+.ar-invoice .num-cell { text-align: right; }
+.ar-invoice .num-cell input { text-align: right; }
+.ar-invoice .blue-text, .ar-invoice .blue-text input { color: #1d4ed8; }
+.ar-invoice .row-num { width: 24px; text-align: center; color: #666; }
+.ar-invoice .go-cell { display: flex; align-items: center; gap: 3px; }
+.ar-invoice .row-remove {
+  background: none; border: none; color: #b91c1c; cursor: pointer; font-size: 12px;
+}
+
+/* ===== Footer ===== */
+.ar-invoice .footer-wrap {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 14px 10px 14px;
+  border-top: 1px solid #e2e2e2;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.ar-invoice .footer-left { width: 55%; }
+.ar-invoice .footer-right { width: 320px; }
+
+.ar-invoice .footer-left .field-row { margin-bottom: 6px; }
+.ar-invoice .checkbox-row { display: flex; align-items: center; gap: 6px; margin: 10px 0; }
+.ar-invoice .remarks-qr-row { display: flex; gap: 24px; margin-top: 6px; }
+.ar-invoice .remarks-box textarea {
+  width: 260px;
+  height: 55px;
+  border: 1px solid #b9b9b9;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 4px;
+  resize: none;
+}
+.ar-invoice .qr-box input {
+  width: 130px;
+  height: 55px;
+  border: 1px solid #b9b9b9;
+}
+.ar-invoice .footer-label { font-size: 12px; margin-bottom: 3px; font-weight: 600; }
+
+.ar-invoice .action-buttons { display: flex; gap: 8px; margin-top: 16px; }
+.ar-invoice .btn {
+  background: #2c5170;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ar-invoice .btn.secondary { background: #f0f0f0; color: #333; border: 1px solid #b9b9b9; }
+.ar-invoice .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.ar-invoice .btn .caret { font-size: 9px; }
+
+.ar-invoice .totals-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.ar-invoice .totals-label { font-size: 12px; }
+.ar-invoice .totals-value {
+  width: 150px;
+  border: 1px solid #b9b9b9;
+  background: #f4f4f4;
+  text-align: right;
+  padding: 2px 6px;
+  font-size: 12px;
+  color: #1a1a1a;
+}
+.ar-invoice input.totals-value.editable {
+  background: #fff;
+  width: 150px;
+}
+.ar-invoice .totals-value.blue { color: #1d4ed8; font-weight: 600; }
+.ar-invoice .discount-inline { display: flex; align-items: center; gap: 4px; }
+.ar-invoice .discount-inline input {
+  width: 45px;
+  border: 1px solid #b9b9b9;
+  text-align: right;
+  padding: 2px 4px;
+}
+.ar-invoice .orange-arrow { color: #e08a1e; margin-right: 4px; }
+.ar-invoice .ellipsis-btn {
+  background: #2c5170;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  margin-right: 4px;
+  border: none;
+}
+.ar-invoice .copy-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.fi-page {
+    padding: 0 !important;
 }
