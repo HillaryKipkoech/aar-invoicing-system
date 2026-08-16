@@ -6,6 +6,7 @@ use App\Filament\Resources\InvoiceResource\Pages;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Item;
+use App\Models\SalesEmployee;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -22,23 +23,14 @@ class InvoiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationLabel = 'AR Invoice';
+    protected static ?string $navigationLabel = 'Invoices';
 
     protected static ?string $modelLabel = 'AR Invoice';
 
-    protected static ?string $navigationGroup = 'Sales';
+    // protected static ?string $navigationGroup = 'Sales';
 
     protected static ?int $navigationSort = 0;
 
-    /*
-    |--------------------------------------------------------------------
-    | TOTALS ENGINE
-    |--------------------------------------------------------------------
-    | Everything that can move the grand total funnels through here:
-    | line qty/price/discount changes, header discount %, freight, tax,
-    | rounding. Edit this method to change how totals or the approval
-    | threshold are calculated.
-    */
     public static function recalculateTotals(Get $get, Set $set): void
     {
         $lines = $get('lines') ?? [];
@@ -54,9 +46,9 @@ class InvoiceResource extends Resource
             $lineTotal = round($priceAfterDiscount * $qty, 3);
 
             $set("lines.{$key}.price_after_discount", $priceAfterDiscount);
-            $set("lines.{$key}.gross_price_after_discount", $priceAfterDiscount); // extend here if VAT % logic is added
+            $set("lines.{$key}.gross_price_after_discount", $priceAfterDiscount); // to  extend VAT % logic
             $set("lines.{$key}.line_total", $lineTotal);
-            $set("lines.{$key}.gross_total", $lineTotal); // extend here if VAT amount should be added on top
+            $set("lines.{$key}.gross_total", $lineTotal); 
 
             $totalBeforeDiscount += round($price * $qty, 3);
             $grandTotal += $lineTotal;
@@ -78,7 +70,7 @@ class InvoiceResource extends Resource
         $balanceDue = round($totalAfterDiscount - $downPayment, 3);
         $set('balance_due', $balanceDue);
 
-        // ---- Approval threshold: change 10000 here to adjust the rule ----
+ 
         $set('needs_approval', $totalAfterDiscount > Invoice::APPROVAL_THRESHOLD);
         $set('approval_amount', $totalAfterDiscount);
     }
@@ -87,25 +79,25 @@ class InvoiceResource extends Resource
     {
         return $form->schema([
 
-            // ================= HEADER: two columns, exactly like the screenshot =================
             Forms\Components\Grid::make(2)->schema([
 
-                // ---- LEFT: Customer block ----
+                // ---- LEFT block ----
                 Forms\Components\Group::make([
                     Forms\Components\Select::make('customer_id')
                         ->label('Customer')
                         ->relationship('customer', 'customer_code')
-                        ->searchable()
+                        ->searchable(['customer_code', 'display_name'])
+                        ->getOptionLabelFromRecordUsing(
+                            fn (Customer $record) =>
+                                "{$record->customer_code} — {$record->display_name}"
+                        )
                         ->preload()
-                        ->getSearchResultsUsing(fn (string $search) => Customer::query()
-                            ->where('customer_code', 'like', "%{$search}%")
-                            ->orWhere('display_name', 'like', "%{$search}%")
-                            ->limit(20)->get()
-                            ->mapWithKeys(fn ($c) => [$c->id => "{$c->customer_code} — {$c->display_name}"]))
-                        ->getOptionLabelUsing(fn ($value) => optional(Customer::find($value))->customer_code)
                         ->required()
                         ->live()
-                        ->afterStateUpdated(fn (Set $set, $state) => self::fillCustomerFields($set, $state))
+                        ->afterStateUpdated(
+                            fn (Set $set, $state) =>
+                                self::fillCustomerFields($set, $state)
+                        )
                         ->suffixAction(
                             Forms\Components\Actions\Action::make('chooseCustomer')
                                 ->icon('heroicon-m-arrow-right-circle')
@@ -113,16 +105,22 @@ class InvoiceResource extends Resource
                                 ->modalHeading('Select Customer')
                                 ->form([
                                     Forms\Components\Select::make('selected_customer')
-                                        ->label('')
-                                        ->options(fn () => Customer::query()
-                                            ->get()
-                                            ->mapWithKeys(fn ($c) => [$c->id => "{$c->customer_code} — {$c->display_name}"]))
-                                        ->searchable()
+                                        ->label('Customer')
+                                        ->relationship('customer', 'customer_code')
+                                        ->searchable(['customer_code', 'display_name'])
+                                        ->getOptionLabelFromRecordUsing(
+                                            fn (Customer $record) =>
+                                                "{$record->customer_code} — {$record->display_name}"
+                                        )
                                         ->required(),
                                 ])
                                 ->action(function (array $data, Set $set) {
                                     $set('customer_id', $data['selected_customer']);
-                                    self::fillCustomerFields($set, $data['selected_customer']);
+
+                                    self::fillCustomerFields(
+                                        $set,
+                                        $data['selected_customer']
+                                    );
                                 })
                         ),
 
@@ -132,10 +130,8 @@ class InvoiceResource extends Resource
 
                     Forms\Components\Select::make('contact_person')
                         ->label('Contact Person')
-                        ->options([]) // populate from a contacts table if/when one exists
+                        ->options([]) 
                         ->searchable(),
-
-                    // "Customer Name" per the spec — searchable list where name is the primary column
                     Forms\Components\Select::make('customer_id_by_name')
                         ->label('Customer Name')
                         ->options(fn () => Customer::query()->pluck('customer_name', 'id'))
@@ -158,7 +154,6 @@ class InvoiceResource extends Resource
                         ->disabled()->dehydrated(false),
                 ]),
 
-                // ---- RIGHT: Document block ----
                 Forms\Components\Group::make([
                     Forms\Components\TextInput::make('doc_no')
                         ->label('No.')
@@ -175,7 +170,6 @@ class InvoiceResource extends Resource
                         ->default(now())
                         ->required()
                         ->live()
-                        // Value Date / Document Date follow Posting Date by default in SAP B1
                         ->afterStateUpdated(function (Set $set, $state) {
                             $set('value_date', $state);
                             $set('document_date', $state);
@@ -191,7 +185,7 @@ class InvoiceResource extends Resource
                 ]),
             ]),
 
-            // Approval label — hidden unless total exceeds 10,000
+            // Approval label - hidden unless total exceeds 10,000
             Forms\Components\Placeholder::make('approval_label')
                 ->hiddenLabel()
                 ->visible(fn (Get $get) => (bool) $get('needs_approval'))
@@ -204,7 +198,7 @@ class InvoiceResource extends Resource
             Forms\Components\Hidden::make('needs_approval')->default(false),
             Forms\Components\Hidden::make('approval_amount')->default(0),
 
-            // ================= TABBED BODY: Contents / Logistics / Accounting / ... =================
+            // ================= Contents  =================
             Forms\Components\Tabs::make('body')->tabs([
 
                 Forms\Components\Tabs\Tab::make('Contents')->schema([
@@ -228,24 +222,66 @@ class InvoiceResource extends Resource
                             Header::make('Gross Total (LC)')->width('130px'),
                         ])
                         ->schema([
-                            Forms\Components\Select::make('item_no')
-                                ->options(fn () => Item::query()->pluck('item_no', 'item_no'))
+                           Forms\Components\Select::make('item_no')
+                                ->label('Item No.')
+                                ->options(function () {
+                                    return Item::query()
+                                        ->orderBy('item_no')
+                                        ->get()
+                                        ->mapWithKeys(function (Item $item) {
+                                            return [
+                                                $item->item_no =>
+                                                    "{$item->item_no} — {$item->item_description}"
+                                            ];
+                                        })
+                                        ->toArray();
+                                })
                                 ->searchable()
-                                ->createOptionForm([Forms\Components\TextInput::make('item_no')->required()])
-                                ->createOptionUsing(fn (array $data) => $data['item_no'])
+                                ->searchPrompt('Search item number or description...')
+                                ->noSearchResultsMessage('No item found.')
+                                ->placeholder('Search or select an item...')
                                 ->live()
-                                ->afterStateUpdated(function (Set $set, $state) {
-                                    $item = Item::where('item_no', $state)->first();
-                                    if ($item) {
-                                        $set('item_description', $item->item_description);
-                                        $set('price_before_discount', $item->unit_price);
-                                        $set('uom_code', $item->uom_code);
-                                        $set('warehouse', $item->warehouse);
-                                        $set('qty_in_whse', $item->qty_in_whse);
-                                        $set('vat_code', $item->vat_code);
-                                    }
-                                }),
+                                ->required()
+                                ->afterStateUpdated(
+                                    fn (Set $set, $state) =>
+                                        self::fillItemFields($set, $state)
+                                )
+                                ->suffixAction(
+                                    Forms\Components\Actions\Action::make('chooseItem')
+                                        ->icon('heroicon-m-arrow-right-circle')
+                                        ->label('Choose From List')
+                                        ->modalHeading('Select Item')
+                                        ->form([
+                            Forms\Components\Select::make('selected_item')
+                                        ->label('Item')
+                                        ->options(function () {
+                                            return Item::query()
+                                                ->orderBy('item_no')
+                                                ->get()
+                                                ->mapWithKeys(function (Item $item) {
+                                                    return [
+                                                        $item->item_no =>
+                                                            "{$item->item_no} — {$item->item_description}"
+                                                    ];
+                                                })
+                                                ->toArray();
+                                        })
+                                        ->searchable()
+                                        ->searchPrompt('Search item number or description...')
+                                        ->noSearchResultsMessage('No item found.')
+                                        ->placeholder('Search item...')
+                                        ->required(),
+                                ])
+                                ->action(function (array $data, Set $set) {
+                                    $set('item_no', $data['selected_item']);
 
+                                    self::fillItemFields(
+                                        $set,
+                                        $data['selected_item']
+                                    );
+                                })
+                        ),
+    
                             Forms\Components\TextInput::make('item_description')
                                 ->required(),
 
@@ -299,8 +335,6 @@ class InvoiceResource extends Resource
                         ->reorderable(false)
                         ->streamlined(),
                 ]),
-
-                // ---- Placeholder tabs for future extension — see README "Where to extend" ----
                 Forms\Components\Tabs\Tab::make('Logistics')->schema([
                     Forms\Components\Placeholder::make('logistics_placeholder')
                         ->hiddenLabel()
@@ -329,20 +363,40 @@ class InvoiceResource extends Resource
                 ]),
             ]),
 
-            // ================= FOOTER: two columns, exactly like the screenshot =================
+            // ================= FOOTER =================
             Forms\Components\Grid::make(2)->schema([
 
-                // ---- LEFT: Sales Employee / Owner / Remarks / QR ----
                 Forms\Components\Group::make([
                     Forms\Components\Select::make('sales_employee_id')
                         ->label('Sales Employee')
                         ->relationship('salesEmployee', 'name')
                         ->searchable()->preload()->required()
                         ->live()
-                        ->afterStateUpdated(function (Set $set, $state) {
-                            $employee = \App\Models\SalesEmployee::find($state);
-                            $set('owner', $employee?->name);
-                        }),
+                        ->afterStateUpdated(
+                            fn (Set $set, $state) =>
+                                self::fillSalesEmployeeFields($set, $state)
+                        )
+                        ->suffixAction(
+                            Forms\Components\Actions\Action::make('chooseSalesEmployee')
+                                ->icon('heroicon-m-arrow-right-circle')
+                                ->label('Choose From List')
+                                ->modalHeading('Select Sales Employee')
+                                ->form([
+                                    Forms\Components\Select::make('selected_sales_employee')
+                                        ->label('Sales Employee')
+                                        ->relationship('salesEmployee', 'name')
+                                        ->searchable()
+                                        ->required(),
+                                ])
+                                ->action(function (array $data, Set $set) {
+                                    $set('sales_employee_id', $data['selected_sales_employee']);
+
+                                    self::fillSalesEmployeeFields(
+                                        $set,
+                                        $data['selected_sales_employee']
+                                    );
+                                })
+                        ),
 
                     Forms\Components\TextInput::make('owner')
                         ->label('Owner')
@@ -358,8 +412,6 @@ class InvoiceResource extends Resource
                             ->label('QRCode'),
                     ]),
                 ]),
-
-                // ---- RIGHT: Totals block ----
                 Forms\Components\Group::make([
                     Forms\Components\TextInput::make('total_before_discount')
                         ->label('Total Before Discount')->numeric()->disabled()->dehydrated(),
@@ -400,11 +452,6 @@ class InvoiceResource extends Resource
         ]);
     }
 
-    /**
-     * Fills the read-only display fields (Name, BP Currency, KRA PIN) whenever
-     * either the Customer Code or Customer Name selector changes.
-     * Edit this to pull in more customer fields as needed.
-     */
     protected static function fillCustomerFields(Set $set, $customerId): void
     {
         $customer = Customer::find($customerId);
@@ -415,6 +462,27 @@ class InvoiceResource extends Resource
         $set('display_name_display', $customer->display_name);
         $set('bp_currency_display', $customer->currency);
         $set('kra_pin_display', $customer->kra_pin);
+    }
+
+
+    protected static function fillItemFields(Set $set, $itemNo): void
+    {
+        $item = Item::where('item_no', $itemNo)->first();
+        if (! $item) {
+            return;
+        }
+        $set('item_description', $item->item_description);
+        $set('price_before_discount', $item->unit_price);
+        $set('uom_code', $item->uom_code);
+        $set('warehouse', $item->warehouse);
+        $set('qty_in_whse', $item->qty_in_whse);
+        $set('vat_code', $item->vat_code);
+    }
+
+    protected static function fillSalesEmployeeFields(Set $set, $employeeId): void
+    {
+        $employee = SalesEmployee::find($employeeId);
+        $set('owner', $employee?->name);
     }
 
     public static function table(Table $table): Table

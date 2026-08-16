@@ -166,7 +166,6 @@ class ManageInvoice extends Page
         $this->loadSalesEmployee($value);
     }
 
-    // ---- Posting date cascades to Value/Document date, mirroring SAP B1 ----
     public function updatedPostingDate($value): void
     {
         $this->value_date = $value;
@@ -202,7 +201,6 @@ class ManageInvoice extends Page
 
     public function updatedLines($value, $key): void
     {
-        // $key looks like "3.item_no" — only react to item selection or number fields
         if (str_contains($key, '.item_no')) {
             [$index] = explode('.', $key);
             $item = Item::where('item_no', $this->lines[$index]['item_no'])->first();
@@ -224,14 +222,9 @@ class ManageInvoice extends Page
     public function updatedTax(): void { $this->recalculateTotals(); }
     public function updatedTotalDownPayment(): void { $this->recalculateTotals(); }
 
-    /*
-    |--------------------------------------------------------------------
-    | TOTALS ENGINE
-    |--------------------------------------------------------------------
-    */
    public function recalculateTotals(): void
 {
-    bcscale(6); // internal precision; we round for display/storage below
+    bcscale(6); 
 
     $totalBeforeDiscount = '0';
     $grandTotal = '0';
@@ -275,24 +268,18 @@ class ManageInvoice extends Page
 
     public function copyFrom(): void
     {
-        // TODO: open a document picker (e.g. Filament modal action) letting
-        // the user choose a Sales Order / Delivery to copy lines & header
-        // fields from, then populate $this->lines and header properties.
+        // to implement later
     }
 
     public function copyTo(): void
     {
-        // TODO: only meaningful once this invoice is saved — typically
-        // copies this invoice forward into a Credit Memo, etc.
+        // to implement later
     }
 
     // ---- Save actions ----
     public function addAndNew(): void
     {
         $this->save('Open');
-        // navigate: false forces a genuine fresh page load/mount, so the
-        // "No." field is guaranteed to recompute against the row we just
-        // inserted rather than reusing any client-side cached state.
         $this->redirect(static::getResource()::getUrl('create'), navigate: false);
     }
 
@@ -391,20 +378,6 @@ public function updatedCustomerNameSearch($value): void
         ->toArray();
 }
 
-// public function selectCustomer(int $customerId): void
-// {
-//     $this->customer_id = $customerId;
-//     $this->loadCustomer($customerId, keepContactPerson: false, keepCustomerName: false);
-
-//     $customer = Customer::find($customerId);
-//     $this->customerSearch = $customer?->customer_code ?? '';
-//     $this->customerNameSearch = $customer?->display_name ?? '';
-
-//     $this->showCustomerDropdown = false;
-//     $this->showCustomerNameDropdown = false;
-//     $this->customerResults = [];
-//     $this->customerNameResults = [];
-// }
         public function selectCustomer(int $customerId): void
         {
             $this->customer_id = $customerId;

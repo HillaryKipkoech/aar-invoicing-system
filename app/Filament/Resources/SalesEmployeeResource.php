@@ -18,7 +18,7 @@ class SalesEmployeeResource extends Resource
 
     protected static ?string $navigationLabel = 'Sales Employees';
 
-    protected static ?string $navigationGroup = 'Master Data';
+    // protected static ?string $navigationGroup = 'Master Data';
 
     protected static ?int $navigationSort = 3;
 

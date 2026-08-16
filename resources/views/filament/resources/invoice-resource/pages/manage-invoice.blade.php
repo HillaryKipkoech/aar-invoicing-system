@@ -6,14 +6,9 @@
 
 
         {{-- ===== Title bar ===== --}}
-        <!-- <div class="titlebar">
+        <div class="titlebar">
             <span>AR Invoice</span>
-            <span class="controls">
-                <span>&#8211;</span>
-                <span>&#9633;</span>
-                <span class="close">&#10005;</span>
-            </span>
-        </div> -->
+        </div>
 
         {{-- ===== Header ===== --}}
         <div class="header-wrap">

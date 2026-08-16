@@ -18,7 +18,7 @@ class ItemResource extends Resource
 
     protected static ?string $navigationLabel = 'Items';
 
-    protected static ?string $navigationGroup = 'Master Data';
+    // protected static ?string $navigationGroup = 'Master Data';
 
     protected static ?int $navigationSort = 2;
 

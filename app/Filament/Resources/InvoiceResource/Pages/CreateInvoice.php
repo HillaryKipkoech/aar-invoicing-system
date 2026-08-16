@@ -12,8 +12,6 @@ class CreateInvoice extends CreateRecord
 {
     protected static string $resource = InvoiceResource::class;
 
-    // Replaces Filament's default "Create" button with the SAP-B1-style
-    // Add & New / Add Draft & New / Cancel buttons.
     protected function getFormActions(): array
     {
         return [
@@ -52,7 +50,7 @@ class CreateInvoice extends CreateRecord
         $data['doc_no'] = Invoice::nextDocNo();
         $data['status'] = $data['status'] ?? 'Open';
 
-        // Server-side guard mirroring the UI validations.
+        // Server-side guard 
         foreach ($data['lines'] ?? [] as $line) {
             if (($line['discount'] ?? 0) > 50) {
                 throw \Illuminate\Validation\ValidationException::withMessages([
