@@ -18,8 +18,6 @@
 
         {{-- Dashboard content --}}
         <div class="dashboard-content">
-
-            {{-- Stats will go here --}}
             <div class="dashboard-stats">
                 {{ $this->getHeaderWidgets() }}
             </div>

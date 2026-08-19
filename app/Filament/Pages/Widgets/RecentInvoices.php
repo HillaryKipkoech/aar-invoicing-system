@@ -12,6 +12,7 @@ class RecentInvoices extends BaseWidget
     protected static ?string $heading = 'Recent Invoices';
 
     protected static ?int $sort = 2;
+    protected int|string|array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {
@@ -25,7 +26,7 @@ class RecentInvoices extends BaseWidget
                     ->label('Invoice #')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('customer.name')
+                Tables\Columns\TextColumn::make('customer_name')
                     ->label('Customer')
                     ->searchable(),
 

@@ -9,4 +9,11 @@ class Customer extends Model
     protected $fillable = [
         'customer_code', 'display_name', 'customer_name', 'contact_person', 'currency', 'kra_pin',
     ];
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }
+
+

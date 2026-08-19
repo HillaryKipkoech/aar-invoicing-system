@@ -20,7 +20,10 @@ class DashboardStats extends BaseWidget
             )
                 ->description('Registered customers')
                 ->icon('heroicon-o-users')
-                ->color('primary'),
+                ->color('primary')
+                 ->extraAttributes([
+                    'class' => 'dashboard-stat-card customers-card',
+                ]),
 
             Stat::make(
                 'Items',
@@ -28,7 +31,10 @@ class DashboardStats extends BaseWidget
             )
                 ->description('Products / services')
                 ->icon('heroicon-o-cube')
-                ->color('warning'),
+                ->color('warning')
+                ->extraAttributes([
+                    'class' => 'dashboard-stat-card items-card',
+                ]),
 
             Stat::make(
                 'Sales Employees',
@@ -36,7 +42,10 @@ class DashboardStats extends BaseWidget
             )
                 ->description('Active sales employees')
                 ->icon('heroicon-o-user-group')
-                ->color('success'),
+                ->color('success')
+                ->extraAttributes([
+                    'class' => 'dashboard-stat-card employees-card',
+                ]),
 
             Stat::make(
                 'Invoices',
@@ -44,7 +53,10 @@ class DashboardStats extends BaseWidget
             )
                 ->description('Total invoices')
                 ->icon('heroicon-o-document-text')
-                ->color('primary'),
+                ->color('primary')
+                ->extraAttributes([
+                    'class' => 'dashboard-stat-card invoices-card',
+                ]),
         ];
     }
 }

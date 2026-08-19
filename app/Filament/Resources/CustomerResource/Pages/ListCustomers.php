@@ -12,6 +12,16 @@ class ListCustomers extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [Actions\CreateAction::make()];
+        return [
+            Actions\CreateAction::make()
+                ->label('New Customer')
+                ->icon('heroicon-o-plus-circle')
+                ->color('info')
+                ->modalHeading('Create New Customer')
+                ->modalSubmitActionLabel('Create')
+                ->createAnother(false)
+                ->slideOver(),
+        ];
+        
     }
 }

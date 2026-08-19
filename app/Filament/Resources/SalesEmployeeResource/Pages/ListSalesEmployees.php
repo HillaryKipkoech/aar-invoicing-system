@@ -12,6 +12,15 @@ class ListSalesEmployees extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [Actions\CreateAction::make()];
+        return [
+            Actions\CreateAction::make()
+                ->label('New Sales Employee')
+                ->icon('heroicon-o-plus-circle')
+                ->color('info')
+                ->modalHeading('New Sales Employee')
+                ->modalSubmitActionLabel('Create')
+                ->createAnother(false)
+                ->slideOver(),
+        ];
     }
 }

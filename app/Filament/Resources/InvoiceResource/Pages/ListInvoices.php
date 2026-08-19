@@ -12,8 +12,17 @@ class ListInvoices extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        
+
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('New Invoice')
+                ->icon('heroicon-o-plus-circle')
+                ->color('info')
+                ->modalHeading('Create New Invoice')
+                ->modalSubmitActionLabel('Create')
+                ->createAnother(false)
+                ->slideOver(),
         ];
     }
 }
