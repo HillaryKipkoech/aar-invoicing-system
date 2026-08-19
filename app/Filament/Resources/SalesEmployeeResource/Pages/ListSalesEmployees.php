@@ -1,25 +1,23 @@
 <?php
 
-namespace App\Filament\Resources\InvoiceResource\Pages;
+namespace App\Filament\Resources\SalesEmployeeResource\Pages;
 
-use App\Filament\Resources\InvoiceResource;
+use App\Filament\Resources\SalesEmployeeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListInvoices extends ListRecords
+class ListSalesEmployees extends ListRecords
 {
-    protected static string $resource = InvoiceResource::class;
+    protected static string $resource = SalesEmployeeResource::class;
 
     protected function getHeaderActions(): array
     {
-        
-
         return [
             Actions\CreateAction::make()
-                ->label('New Invoice')
+                ->label('New Sales Employee')
                 ->icon('heroicon-o-plus-circle')
                 ->color('info')
-                ->modalHeading('Create New Invoice')
+                ->modalHeading('New Sales Employee')
                 ->modalSubmitActionLabel('Create')
                 ->createAnother(false)
                 ->slideOver(),
