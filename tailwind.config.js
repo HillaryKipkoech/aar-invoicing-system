@@ -1,4 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
+import preset from './vendor/filament/filament/tailwind.config.preset'
+
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -16,5 +18,18 @@ export default {
             },
         },
     },
+    presets: [preset],
+    content: [
+        './app/Filament/**/*.php',
+        './resources/views/filament/**/*.blade.php',
+        './vendor/filament/**/*.blade.php',
+    ],
+
+    input: [
+        'resources/css/app.css',
+        'resources/css/filament/admin/theme.css',
+        'resources/css/filament/admin/ar-invoice.css',
+        'resources/js/app.js',
+    ],
     plugins: [],
 };

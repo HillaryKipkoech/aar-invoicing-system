@@ -1,0 +1,1725 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+@config '../../../../tailwind.config.js';
+
+
+/* =========================================================
+   GLOBAL VARIABLES
+   ========================================================= */
+
+:root {
+    --ar-navy: #2c5170;
+    --ar-gold: #d9a441;
+    --ar-blue-text: #1d4ed8;
+    --ar-grey-bg: #eef1f4;
+    --ar-grey-border: #b9b9b9;
+    --ar-accent-width: 2px; /* thin gold accent, used on top of navy bars */
+}
+
+
+/* =========================================================
+   FILAMENT TOP NAVIGATION BAR
+   ========================================================= */
+
+/* =========================================================
+   FILAMENT TOP NAVIGATION BAR — full-width navy, no gaps
+   ========================================================= */
+
+.fi-topbar {
+    background-color: var(--ar-navy) !important;
+}
+
+.fi-topbar nav {
+    background-color: var(--ar-navy) !important;
+    border-top: var(--ar-accent-width) solid var(--ar-gold) !important;
+    border-bottom: none !important;
+    min-height: 58px;
+}
+
+.fi-topbar * {
+    color: #ffffff !important;
+}
+
+.fi-topbar .fi-avatar {
+    background-color: #111111 !important;
+    color: #ffffff !important;
+}
+
+/* The sidebar-toggle / logo slot on the far left of the topbar */
+.fi-topbar-open-sidebar-btn,
+.fi-logo {
+    background-color: var(--ar-navy) !important;
+    color: #ffffff !important;
+}
+
+.fi-sidebar-header {
+    background-color: var(--ar-navy) !important;
+    border-top: var(--ar-accent-width) solid var(--ar-gold) !important;
+    border-bottom: none !important;
+}
+
+.fi-sidebar-header * {
+    color: #ffffff !important;
+}
+
+.fi-sidebar-header svg {
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   FILAMENT PAGE HEADER — flush, continuous with topbar
+   ========================================================= */
+
+.fi-main {
+    padding-top: 0 !important;
+}
+
+
+.fi-header-heading {
+    color: #ffffff !important;
+    font-weight: 600;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.fi-header button,
+.fi-header svg {
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   FILAMENT TABS
+   ========================================================= */
+
+.fi-tabs {
+    background-color: #e8e8e8;
+    border-bottom: 1px solid #b9b9b9;
+    gap: 2px;
+}
+
+.fi-tabs-item {
+    color: #333333;
+    background-color: #e8e8e8;
+    border: 1px solid #b9b9b9;
+    border-bottom: none;
+    font-size: 0.75rem;
+}
+
+.fi-tabs-item[aria-selected="true"] {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    font-weight: 600;
+    position: relative;
+    top: 1px;
+}
+
+
+/* =========================================================
+   FILAMENT FORM FIELDS
+   ========================================================= */
+
+.fi-fo-field-wrp label {
+    font-size: 0.75rem;
+    color: #1a1a1a;
+}
+
+.fi-input,
+.fi-select-input {
+    font-size: 0.75rem !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+     min-height: 3rem;
+}
+
+.fi-input:disabled,
+.fi-select-input:disabled {
+    background-color: #f4f4f4 !important;
+    color: #333333 !important;
+     min-height: 3rem;
+}
+
+
+/* =========================================================
+   VALUE DATE
+   ========================================================= */
+
+[data-field-wrapper="value_date"] .fi-input {
+    background-color: #fdf3d6 !important;
+    border-color: var(--ar-gold) !important;
+}
+
+
+/* =========================================================
+   APPROVAL LABEL
+   ========================================================= */
+
+*[wire\:key*="approval_label"] {
+    color: #b91c1c;
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+
+/* =========================================================
+   FILAMENT REPEATER
+   ========================================================= */
+
+.fi-fo-repeater .fi-fo-repeater-item {
+    border: 1px solid #dde2e6;
+}
+
+.fi-fo-repeater .fi-fo-repeater-item:nth-child(even) {
+    background-color: #f7f9fb;
+}
+
+.fi-fo-repeater .fi-fo-repeater-item:hover {
+    background-color: #eef6ff;
+}
+
+.fi-fo-repeater-header-actions,
+.fi-fo-repeater-item-header {
+    background-color: #eef1f4 !important;
+    border-color: #cfd4d9 !important;
+}
+
+
+/* =========================================================
+   COMPUTED / BLUE VALUES (Filament form fallback fields)
+   ========================================================= */
+
+[data-field-wrapper="price_after_discount"] .fi-input,
+[data-field-wrapper="gross_price_after_discount"] .fi-input,
+[data-field-wrapper="line_total"] .fi-input,
+[data-field-wrapper="gross_total"] .fi-input {
+    color: var(--ar-blue-text) !important;
+    font-weight: 500;
+    background-color: #f4f4f4 !important;
+}
+
+
+/* =========================================================
+   TOTALS (Filament form fallback fields)
+   ========================================================= */
+
+[data-field-wrapper="total_before_discount"] .fi-input,
+[data-field-wrapper="total_after_discount"] .fi-input,
+[data-field-wrapper="applied_amount"] .fi-input {
+    background-color: #f4f4f4 !important;
+    text-align: right !important;
+    font-size: 0.75rem !important;
+}
+
+[data-field-wrapper="total_after_discount"] .fi-input {
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+}
+
+[data-field-wrapper="balance_due"] .fi-input {
+    color: var(--ar-blue-text) !important;
+    font-weight: 600 !important;
+    background-color: #f4f4f4 !important;
+    text-align: right !important;
+}
+
+
+/* =========================================================
+   FILAMENT BUTTONS
+   ========================================================= */
+
+.fi-btn.fi-color-primary {
+    background-color: var(--ar-navy) !important;
+    font-size: 0.75rem !important;
+}
+
+.fi-btn.fi-color-gray {
+    background-color: #f0f0f0 !important;
+    color: #333333 !important;
+    border: 1px solid #b9b9b9 !important;
+}
+
+
+/* =========================================================
+   REMOVE FILAMENT PAGE PADDING
+   ========================================================= */
+
+.fi-page {
+    padding: 0 !important;
+}
+
+
+/* =========================================================
+   AR INVOICE
+   ========================================================= */
+
+.ar-invoice {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    background: #ffffff;
+    color: #1a1a1a;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.ar-invoice *,
+.ar-invoice *::before,
+.ar-invoice *::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TITLE BAR (custom, only used if Filament's native header
+   is hidden — thin gold accent on top, navy below)
+   ========================================================= */
+
+.ar-invoice .titlebar {
+    background: var(--ar-navy);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border: none !important;
+    border-top: var(--ar-accent-width) solid var(--ar-gold) !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.ar-invoice .titlebar .controls span {
+    display: inline-block;
+    width: 14px;
+    text-align: center;
+    margin-left: 10px;
+    cursor: default;
+    opacity: 0.9;
+}
+
+.ar-invoice .titlebar .controls .close:hover {
+    color: #ff8080;
+}
+
+
+/* =========================================================
+   INVOICE HEADER
+   ========================================================= */
+
+.ar-invoice .header-wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 14px 4px 14px;
+    flex-wrap: wrap;
+
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.ar-invoice .header-left,
+.ar-invoice .header-right {
+    width: 48%;
+}
+
+.ar-invoice .header-right {
+    max-width: 260px;
+}
+
+
+/* =========================================================
+   HEADER FIELD ROW
+   ========================================================= */
+
+.ar-invoice .field-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+    gap: 4px;
+}
+
+.ar-invoice .field-label {
+    width: 110px;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: #1a1a1a;
+}
+
+.ar-invoice .field-label.bold {
+    font-weight: 700;
+}
+
+.ar-invoice .field-input-wrap {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ar-invoice .field-input {
+    width: 100%;
+    max-width: 320px;
+    border: 1px solid #b9b9b9;
+    padding: 2px 4px;
+    font-size: 12px;
+    height: 20px;
+    background: #ffffff;
+}
+
+.ar-invoice .field-input:disabled {
+    background: #eef1f4;
+    color: #333333;
+}
+
+.ar-invoice .field-input.readonly-plain {
+    background: #ffffff;
+    color: #1a1a1a;
+}
+
+.ar-invoice .go-arrow {
+    color: #e08a1e;
+    font-weight: bold;
+    flex-shrink: 0;
+    cursor: pointer;
+    user-select: none;
+    background: none;
+    border: none;
+    font-size: 13px;
+}
+
+.ar-invoice .field-icon-btn {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #b9b9b9;
+    border-radius: 50%;
+    color: #6b7280;
+    font-size: 10px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.ar-invoice .header-right .field-input {
+    max-width: 130px;
+}
+
+.ar-invoice .no-field-group {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.ar-invoice .no-prefix {
+    border: 1px solid #b9b9b9;
+    border-right: none;
+    background: #ffffff;
+    padding: 2px 6px;
+    font-size: 12px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #1a1a1a;
+}
+
+.ar-invoice .no-prefix .caret {
+    font-size: 9px;
+    color: #555555;
+}
+
+.ar-invoice .no-field-group .field-input {
+    border-left: none;
+}
+
+.ar-invoice .field-label-dropdown {
+    width: 110px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #b9b9b9;
+    padding: 2px 6px;
+    height: 20px;
+    font-size: 12px;
+    background: #ffffff;
+    gap: 4px;
+}
+
+.ar-invoice .field-label-dropdown .caret {
+    font-size: 9px;
+    color: #555555;
+}
+
+.ar-invoice .value-date-highlight {
+    background: #fdf3d6 !important;
+    border: 1px solid var(--ar-gold) !important;
+}
+
+.ar-invoice .calendar-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d9a441;
+    color: var(--ar-navy);
+    font-size: 10px;
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   APPROVAL LABEL
+   ========================================================= */
+
+.ar-invoice .approval-label {
+    color: #b91c1c;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px 14px;
+}
+
+
+/* =========================================================
+   TABS
+   ========================================================= */
+
+.ar-invoice .tabs {
+    display: flex;
+    margin: 50px 14px 0 14px;
+    border: none;
+    border-bottom: 1px solid #b9b9b9;
+    gap: 2px;
+    background: transparent;
+}
+
+.ar-invoice .tab {
+    flex: 1 1 0;
+    text-align: center;
+    padding: 6px 22px;
+    font-size: 12px;
+    background: #e8e8e8;
+    border: 1px solid #b9b9b9;
+    border-bottom: none;
+    margin-right: 0;
+    cursor: pointer;
+    color: #333333;
+}
+
+.ar-invoice .tab.active {
+    background: #ffffff;
+    font-weight: 600;
+    border-bottom: 2px solid #ffffff;
+    position: relative;
+    top: 1px;
+}
+
+
+/* =========================================================
+   TABLE TOOLBAR
+   ========================================================= */
+
+.ar-invoice .table-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 14px;
+    font-size: 12px;
+    background: #ffffff;
+    border: none !important;
+}
+
+.ar-invoice .table-toolbar select {
+    font-size: 12px;
+    padding: 1px 4px;
+    border: 1px solid #b9b9b9;
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
+   ========================================================= */
+
+.ar-invoice .table-wrap {
+    position: relative;
+    padding: 0 14px;
+    overflow-x: auto;
+    width: 100%;
+    background: transparent;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.ar-invoice .grid-expand-icon {
+    position: absolute;
+    top: -2px;
+    right: 16px;
+    color: var(--ar-navy);
+    font-size: 13px;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   MAIN INVOICE TABLE
+   ========================================================= */
+
+.ar-invoice table.grid {
+    display: table !important;
+    width: 100% !important;
+    min-width: 1506px;
+    max-width: none;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 12px;
+    border: 1px solid #b9b9b9 !important;
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+.ar-invoice table.grid th {
+    background: #eef1f4;
+    border-top: 1px solid #cfd4d9;
+    border-right: 1px solid #cfd4d9;
+    border-bottom: 1px solid #cfd4d9;
+    border-left: none;
+    padding: 4px 6px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 24px;
+}
+
+.ar-invoice table.grid th:first-child {
+    border-left: 1px solid #cfd4d9;
+}
+
+
+/* =========================================================
+   TABLE BODY CELLS
+   ========================================================= */
+
+.ar-invoice table.grid td {
+    border-top: 1px solid #dde2e6;
+    border-right: 1px solid #dde2e6;
+    border-bottom: none;
+    border-left: none;
+    padding: 3px 6px;
+    height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #ffffff;
+}
+
+.ar-invoice table.grid td:first-child {
+    border-left: 1px solid #dde2e6;
+}
+
+.ar-invoice table.grid tbody tr:last-child td {
+    border-bottom: 1px solid #dde2e6;
+}
+
+
+/* =========================================================
+   TABLE ROW STRIPING
+   ========================================================= */
+
+.ar-invoice table.grid tbody tr:nth-child(even) td {
+    background: #f7f9fb;
+}
+
+.ar-invoice table.grid tbody tr:hover td {
+    background: #eef6ff;
+}
+
+
+/* =========================================================
+   TABLE INPUTS
+   ========================================================= */
+
+.ar-invoice table.grid td input,
+.ar-invoice table.grid td select {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 12px;
+    padding: 1px 2px;
+    color: #1a1a1a;
+}
+
+.ar-invoice table.grid td input:focus,
+.ar-invoice table.grid td select:focus {
+    outline: 1px solid var(--ar-navy);
+    background: #ffffff;
+}
+
+.ar-invoice table.grid td input:disabled,
+.ar-invoice table.grid td select:disabled {
+    background: transparent !important;
+    color: #1a1a1a;
+}
+
+.ar-invoice table.grid td input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.ar-invoice table.grid td input[type="number"]::-webkit-outer-spin-button,
+.ar-invoice table.grid td input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* =========================================================
+   ITEM NUMBER CELL
+   ========================================================= */
+
+.ar-invoice .go-cell {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    gap: 3px;
+}
+
+.ar-invoice .go-cell .go-arrow {
+    flex: 0 0 auto;
+    width: 12px;
+}
+
+.ar-invoice .go-cell select {
+    flex: 1 1 auto;
+    width: auto !important;
+    min-width: 0;
+    max-width: none !important;
+}
+
+
+/* =========================================================
+   WHSE CELL
+   ========================================================= */
+
+.ar-invoice .whse-cell {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    gap: 3px;
+}
+
+.ar-invoice .whse-cell .go-arrow {
+    flex: 0 0 auto;
+    width: 12px;
+}
+
+
+/* =========================================================
+   MONEY CELLS
+   ========================================================= */
+
+.ar-invoice table.grid td.money-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    width: 100%;
+    min-width: 0;
+}
+
+.ar-invoice .money-cell .currency-prefix {
+    flex-shrink: 0;
+    color: inherit;
+}
+
+.ar-invoice .money-cell input {
+    flex: 0 1 auto;
+    width: 100%;
+    text-align: right;
+}
+
+.ar-invoice .money-cell.blue-money,
+.ar-invoice .money-cell.blue-money input,
+.ar-invoice .money-cell.blue-money .currency-prefix {
+    color: var(--ar-blue-text) !important;
+}
+
+
+/* =========================================================
+   ROW NUMBER
+   ========================================================= */
+
+.ar-invoice .row-num {
+    width: 24px;
+    text-align: center;
+    color: #666666;
+}
+
+
+/* =========================================================
+   REMOVE ROW
+   ========================================================= */
+
+.ar-invoice table.grid td:last-child {
+    text-align: center;
+}
+
+.ar-invoice .row-remove {
+    background: none;
+    border: none;
+    color: #b91c1c;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    padding: 2px 6px;
+}
+
+.ar-invoice .row-remove:hover {
+    background: #fde8e8;
+    border-radius: 3px;
+}
+
+
+/* =========================================================
+   VALIDATION ERRORS
+   ========================================================= */
+
+.ar-invoice .field-error {
+    color: #b91c1c;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.ar-invoice .footer-wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 14px 10px 14px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    background: #ffffff;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.ar-invoice .footer-left {
+    width: 55%;
+}
+
+.ar-invoice .footer-left .field-row {
+    margin-bottom: 6px;
+}
+
+.ar-invoice .footer-right {
+    width: 320px;
+}
+
+
+/* =========================================================
+   FOOTER CHECKBOX
+   ========================================================= */
+
+.ar-invoice .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 10px 0;
+}
+
+.ar-invoice .checkbox-row.is-disabled {
+    color: #9ca3af;
+}
+
+.ar-invoice .checkbox-row.is-disabled input {
+    accent-color: #9ca3af;
+}
+
+
+/* =========================================================
+   REMARKS / QR
+   ========================================================= */
+
+.ar-invoice .remarks-qr-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 6px;
+}
+
+.ar-invoice .remarks-box textarea {
+    width: 260px;
+    height: 90px;
+    border: 1px solid #b9b9b9;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 4px;
+    resize: none;
+}
+
+.ar-invoice .qr-box input {
+    width: 260px;
+    height: 90px;
+    border: 1px solid #b9b9b9;
+}
+
+.ar-invoice .footer-label {
+    font-size: 12px;
+    margin-bottom: 3px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.ar-invoice .action-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.ar-invoice .btn {
+    background: var(--ar-navy);
+    color: #ffffff;
+    border: none;
+    font-size: 12px;
+    padding: 6px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.ar-invoice .btn.secondary {
+    background: #f0f0f0;
+    color: #333333;
+    font-size: 12px;
+    border: 1px solid #b9b9b9;
+}
+
+.ar-invoice .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ar-invoice .btn .caret {
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   TOTALS
+   ========================================================= */
+
+.ar-invoice .totals-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 4px;
+    gap: 6px;
+}
+
+.ar-invoice .totals-label {
+    width: 130px;
+    flex: 0 0 130px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ar-invoice .totals-value,
+.ar-invoice .totals-value-group {
+    width: 184px;
+    flex: 0 0 184px;
+    min-width: 0;
+}
+
+.ar-invoice .totals-value {
+    border: 1px solid #b9b9b9;
+    background: #eef1f4;
+    text-align: right;
+    padding: 2px 6px;
+    font-size: 12px;
+    color: #1a1a1a;
+}
+
+.ar-invoice .totals-value.white {
+    background: #ffffff;
+}
+
+.ar-invoice .totals-value.blue {
+    color: var(--ar-blue-text);
+    font-weight: 600;
+}
+
+.ar-invoice .totals-value-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #b9b9b9;
+    background: #ffffff;
+    padding: 0 6px;
+    height: 20px;
+}
+
+.ar-invoice .totals-value-group .currency-prefix {
+    font-size: 12px;
+    color: #1a1a1a;
+    flex-shrink: 0;
+    margin-right: 4px;
+}
+
+.ar-invoice .totals-value-group .unit-suffix {
+    font-size: 12px;
+    color: #1a1a1a;
+    flex-shrink: 0;
+    margin-left: 4px;
+}
+
+.ar-invoice .totals-value-group input.totals-value.editable {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    border: none !important;
+    background: transparent !important;
+    text-align: right;
+    padding: 0;
+    height: 18px;
+}
+
+.ar-invoice .totals-value-group input.totals-value.editable:focus {
+    outline: none;
+    background: #fdf3d6 !important;
+}
+
+.ar-invoice .discount-inline {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.ar-invoice .discount-inline input {
+    width: 45px;
+    border: 1px solid #b9b9b9;
+    text-align: right;
+    padding: 2px 4px;
+}
+
+.ar-invoice .orange-arrow {
+    color: #e08a1e;
+    margin-right: 4px;
+}
+
+.ar-invoice .ellipsis-btn {
+    background: var(--ar-navy);
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    border: none;
+}
+
+.ar-invoice .totals-icon {
+    flex-shrink: 0;
+    color: var(--ar-navy);
+    font-size: 13px;
+}
+
+.ar-invoice .copy-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+
+/* =========================================================
+   LOGIN PAGE ONLY
+   ========================================================= */
+
+.custom-login-page {
+    width: 100%;
+}
+
+.custom-login-page .login-brand {
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+
+.custom-login-page .login-logo {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ar-navy);
+    color: #ffffff;
+    border-radius: 7px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-top: var(--ar-accent-width) solid var(--ar-gold);
+}
+
+.custom-login-page .login-brand h1 {
+    margin: 0;
+    color: #263b4d;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.custom-login-page .login-brand p {
+    margin-top: 0.4rem;
+    color: #64748b;
+    font-size: 0.75rem;
+}
+
+.custom-login-page .login-form {
+    width: 100%;
+}
+
+
+/* =========================================================
+   LOGIN INPUTS
+   ========================================================= */
+
+.custom-login-page .fi-input {
+    min-height: 42px;
+    padding: 0.55rem 0.7rem !important;
+    font-size: 0.85rem !important;
+    border-color: #cbd5e1 !important;
+    border-radius: 5px;
+}
+
+.custom-login-page .fi-input:focus {
+    border-color: var(--ar-navy) !important;
+    box-shadow: 0 0 0 1px var(--ar-navy) !important;
+}
+
+
+/* =========================================================
+   LOGIN LABELS
+   ========================================================= */
+
+.custom-login-page .fi-fo-field-wrp label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+
+.custom-login-page .fi-btn.fi-color-primary {
+    width: 100%;
+    min-height: 42px;
+    margin-top: 0.5rem;
+    background-color: var(--ar-navy) !important;
+    border-radius: 5px;
+    font-size: 0.85rem !important;
+    font-weight: 600;
+}
+
+.custom-login-page .fi-btn.fi-color-primary:hover {
+    background-color: #1f3d56 !important;
+}
+
+
+/* =========================================================
+   REMEMBER ME
+   ========================================================= */
+
+.custom-login-page input[type="checkbox"] {
+    accent-color: var(--ar-navy);
+}
+
+
+/* =========================================================
+   FORGOT PASSWORD
+   ========================================================= */
+
+.custom-login-page .login-forgot {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.custom-login-page .login-forgot a {
+    color: var(--ar-navy);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.custom-login-page .login-forgot a:hover {
+    color: var(--ar-gold);
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   LOGIN MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+    .custom-login-page .login-brand {
+        margin-bottom: 1.5rem;
+    }
+
+    .custom-login-page .login-logo {
+        width: 52px;
+        height: 52px;
+    }
+
+    .custom-login-page .login-brand h1 {
+        font-size: 1.25rem;
+    }
+}
+
+
+/* =========================================================
+   HIDE FILAMENT DEFAULT LOGIN HEADING
+   ========================================================= */
+
+.fi-simple-page:has(.custom-login-page) .fi-simple-header {
+    display: none !important;
+}
+
+.fi-simple-page:has(.custom-login-page) .fi-simple-main {
+    padding-top: 1rem !important;
+}
+
+
+/* =========================================================
+   ACCOUNTS RECEIVABLE DASHBOARD
+   ========================================================= */
+
+.ar-dashboard {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+.ar-dashboard .dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--ar-navy);
+    color: #ffffff;
+    padding: 1.25rem 1.5rem;
+    border-top: var(--ar-accent-width) solid var(--ar-gold);
+    margin-bottom: 1.25rem;
+}
+
+.ar-dashboard .dashboard-header h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.ar-dashboard .dashboard-header p {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    opacity: 0.85;
+}
+
+.ar-dashboard .dashboard-date {
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.45rem 0.75rem;
+    border-radius: 4px;
+}
+
+.ar-dashboard .dashboard-stats {
+    margin-bottom: 1.25rem;
+}
+
+.ar-dashboard .fi-wi-stats-overview-stat {
+    border-radius: 5px;
+    border: 1px solid #d8dee4;
+    box-shadow: none;
+}
+
+.ar-dashboard .fi-wi-stats-overview-stat:hover {
+    border-color: var(--ar-gold);
+}
+
+.ar-dashboard .fi-section,
+.ar-dashboard .fi-wi {
+    border-radius: 5px;
+}
+
+.ar-dashboard .fi-ta-header {
+    background: #eef1f4;
+}
+
+.ar-dashboard .fi-ta-header-cell {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.ar-dashboard .fi-ta-cell {
+    font-size: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .ar-dashboard .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .ar-dashboard .dashboard-date {
+        align-self: flex-start;
+    }
+}
+
+
+/* =========================================================
+   AUTOCOMPLETE DROPDOWNS
+   ========================================================= */
+
+.ar-invoice .ac-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #b9b9b9;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    z-index: 50;
+}
+
+.ar-invoice .ac-dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.ar-invoice .ac-dropdown-item:hover {
+    background: #eef6ff;
+}
+
+.ar-invoice .ac-primary {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.ar-invoice .ac-secondary {
+    color: #6b7280;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.ar-invoice,
+.ar-invoice .titlebar,
+.ar-invoice .header-wrap,
+.ar-invoice .tabs,
+.ar-invoice .table-toolbar,
+.ar-invoice .table-wrap,
+.ar-invoice .footer-wrap {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+
+/* ---------- Main application ---------- */
+
+.fi-body {
+    background: var(--ar-page-bg) !important;
+}
+
+.fi-main {
+    background: #fff !important;
+    padding-top: 0 !important;
+}
+
+.fi-page {
+    padding: 0 !important;
+}
+
+
+/* ---------- Top navigation ---------- */
+
+.fi-topbar {
+    background: var(--ar-navy) !important;
+}
+
+.fi-topbar nav {
+    background: var(--ar-navy) !important;
+    border-top: 2px solid var(--ar-gold) !important;
+    min-height: 64px;
+}
+
+.fi-topbar * {
+    color: #ffffff !important;
+}
+
+
+/* ---------- Sidebar ---------- */
+
+.fi-sidebar {
+    background: #dfecf7 !important;
+}
+
+.fi-sidebar-header {
+    background: var(--ar-navy) !important;
+    border-top: 2px solid var(--ar-gold) !important;
+}
+
+.fi-sidebar-item {
+    margin: 2px 8px;
+}
+
+.fi-sidebar-item-button {
+    border-radius: 7px !important;
+    min-height: 42px;
+    color: #475569 !important;
+}
+
+.fi-sidebar-item-button:hover {
+    background: #F1F5F9 !important;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-button {
+    background: #E7F4F3 !important;
+    color: var(--ar-teal) !important;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-icon {
+    color: var(--ar-teal) !important;
+}
+
+
+/* ---------- Resource page header ---------- */
+
+.fi-header {
+    background: var(--ar-navy) !important;
+    border-top: 2px solid var(--ar-gold) !important;
+    border-radius: 0 !important;
+    margin: 0 0 20px 0 !important;
+    padding: 16px 24px !important;
+}
+
+.fi-header-heading {
+    color: #FFFFFF !important;
+    font-size: 1.6rem !important;
+    font-weight: 600 !important;
+}
+
+.fi-header-subheading {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+
+/* ---------- Breadcrumbs ---------- */
+
+.fi-breadcrumbs {
+    margin-bottom: 4px !important;
+}
+
+.fi-breadcrumbs-item-label {
+    font-size: 0.8rem !important;
+}
+
+
+/* ---------- Create button ---------- */
+
+.fi-btn.fi-color-primary {
+    background: var(--ar-teal) !important;
+    border-radius: 7px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    min-height: 40px;
+}
+
+.fi-btn.fi-color-primary:hover {
+    background: #087F7A !important;
+}
+
+
+/* ---------- Table container ---------- */
+
+.fi-ta-ctn {
+    background: var(--ar-surface) !important;
+    border: 1px solid var(--ar-border) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+    overflow: hidden !important;
+}
+
+
+/* ---------- Table toolbar ---------- */
+
+.fi-ta-header {
+    background: #FFFFFF !important;
+    border-bottom: 1px solid var(--ar-border) !important;
+    padding: 14px 16px !important;
+}
+
+
+/* ---------- Search input ---------- */
+
+.fi-ta-search-field {
+    min-height: 42px !important;
+}
+
+
+/* ---------- Table column headers ---------- */
+
+.fi-ta-header-cell {
+    background: #F8FAFC !important;
+    color: #64748B !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+
+/* ---------- Table rows ---------- */
+
+.fi-ta-row {
+    border-bottom: 1px solid #EEF2F6 !important;
+    transition: background-color 0.15s ease;
+}
+
+.fi-ta-row:hover {
+    background: #F8FAFC !important;
+}
+
+
+/* ---------- Table cells ---------- */
+
+.fi-ta-cell {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    font-size: 0.85rem !important;
+    color: var(--ar-text);
+}
+
+
+/* ---------- Customer code / badges ---------- */
+
+.fi-ta-cell .fi-badge {
+    font-size: 0.72rem !important;
+    border-radius: 5px !important;
+}
+
+
+/* ---------- Currency badges ---------- */
+
+.fi-ta-cell .fi-badge.fi-color-primary {
+    background: #E7F4F3 !important;
+    color: #087F7A !important;
+}
+
+
+/* ---------- Table actions ---------- */
+
+.fi-ta-actions {
+    gap: 5px !important;
+}
+
+.fi-ta-actions .fi-icon-btn {
+    border-radius: 6px !important;
+}
+
+.fi-ta-actions .fi-color-danger {
+    color: #DC2626 !important;
+}
+
+
+/* ---------- Pagination ---------- */
+
+.fi-pagination {
+    background: #FFFFFF !important;
+    border-top: 1px solid var(--ar-border) !important;
+    padding: 12px 16px !important;
+}
+
+
+/* =========================================================
+   RESOURCE FORM DESIGN
+   ========================================================= */
+
+.fi-fo-field-wrp label {
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    color: #334155 !important;
+}
+
+
+/* ---------------------------------------------------------
+   Input wrapper (the element that actually draws the
+   border/radius around BOTH the icon/prefix and the
+   text field). Filament nests the <input> or <select>
+   inside this wrapper, so the border/radius/height must
+   live HERE — not on .fi-input itself — or an icon
+   (e.g. the search icon) renders as its own separate
+   boxed square next to the text box.
+   --------------------------------------------------------- */
+
+.fi-input-wrp {
+    min-height: 44px !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 7px !important;
+    background: #FFFFFF !important;
+}
+
+.fi-input-wrp:focus-within {
+    border-color: var(--ar-teal) !important;
+    box-shadow: 0 0 0 1px var(--ar-teal) !important;
+}
+
+
+/* Properly sized form inputs — no border/radius of their
+   own, since the wrapper above already draws it. This is
+   what fixes the disconnected "icon box + text box" look
+   on fields like the table search input. */
+
+.fi-input,
+.fi-select-input {
+    height: auto !important;
+    min-height: 40px !important;
+    padding: 8px 12px !important;
+    font-size: 0.875rem !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+
+/* Form section */
+
+.fi-section {
+    background: #FFFFFF !important;
+    border: 1px solid var(--ar-border) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+.fi-section-header {
+    padding: 14px 18px !important;
+}
+
+.fi-section-content {
+    padding: 18px !important;
+}
+
+
+/* =========================================================
+   RESOURCE MODAL / SLIDEOVER
+   ========================================================= */
+
+.fi-modal-content {
+    border-radius: 10px !important;
+}
+
+.fi-modal-header {
+    background: var(--ar-navy) !important;
+    color: #FFFFFF !important;
+}
+
+.fi-modal-header * {
+    color: #FFFFFF !important;
+}
+
+
+/* =========================================================
+   REMOVE EXCESSIVE EMPTY SPACE
+   ========================================================= */
+
+.fi-ta-content {
+    padding: 0 !important;
+}
+
+.fi-ta-table {
+    margin: 0 !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .fi-header {
+        padding: 14px 16px !important;
+    }
+
+    .fi-header-heading {
+        font-size: 1.35rem !important;
+    }
+
+    .fi-ta-cell {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+}
+
+/* Dashboard Stats Cards */
+.dashboard-stat-card {
+    border-radius: 12px;
+    border: none !important;
+}
+
+/* Customers */
+.customers-card {
+    background: #e8f5f3 !important;
+}
+
+/* Items */
+.items-card {
+    background: #fff4df !important;
+}
+
+/* Sales Employees */
+.employees-card {
+    background: #e8f7ed !important;
+}
+
+/* Invoices */
+.invoices-card {
+    background: #e8eef8 !important;
+}
